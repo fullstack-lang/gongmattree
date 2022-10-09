@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { CommonModule } from '@angular/common';
+
 import { GongmattreespecificComponent } from './gongmattreespecific.component';
 
 import { TreeComponent } from './tree/tree.component';
@@ -32,7 +34,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   imports: [
     MatTreeModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCheckboxModule,
+    CommonModule
   ],
   exports: [
     GongmattreespecificComponent,

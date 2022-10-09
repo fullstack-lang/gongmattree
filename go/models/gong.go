@@ -606,6 +606,12 @@ func (stage *StageStruct) Marshall(file *os.File, modelsPackageName, packageName
 		setValueField = strings.ReplaceAll(setValueField, "{{GeneratedFieldNameValue}}", fmt.Sprintf("%t", node.IsExpanded))
 		initializerStatements += setValueField
 
+		setValueField = NumberInitStatement
+		setValueField = strings.ReplaceAll(setValueField, "{{Identifier}}", id)
+		setValueField = strings.ReplaceAll(setValueField, "{{GeneratedFieldName}}", "HasCheckboxButton")
+		setValueField = strings.ReplaceAll(setValueField, "{{GeneratedFieldNameValue}}", fmt.Sprintf("%t", node.HasCheckboxButton))
+		initializerStatements += setValueField
+
 	}
 
 	map_Tree_Identifiers := make(map[*Tree]string)
@@ -1050,7 +1056,7 @@ func GetFields[Type Gongstruct]() (res []string) {
 	case Button:
 		res = []string{"Name"}
 	case Node:
-		res = []string{"Name", "IsExpanded", "Children", "Button"}
+		res = []string{"Name", "IsExpanded", "HasCheckboxButton", "Children", "Button"}
 	case Tree:
 		res = []string{"Name", "RootNode"}
 	}
@@ -1075,6 +1081,8 @@ func GetFieldStringValue[Type Gongstruct](instance Type, fieldName string) (res 
 			res = any(instance).(Node).Name
 		case "IsExpanded":
 			res = fmt.Sprintf("%t", any(instance).(Node).IsExpanded)
+		case "HasCheckboxButton":
+			res = fmt.Sprintf("%t", any(instance).(Node).HasCheckboxButton)
 		case "Children":
 			for idx, __instance__ := range any(instance).(Node).Children {
 				if idx > 0 {

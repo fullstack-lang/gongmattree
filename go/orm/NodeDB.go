@@ -74,6 +74,10 @@ type NodeDB struct {
 	// Declation for basic field nodeDB.IsExpanded
 	// provide the sql storage for the boolan
 	IsExpanded_Data sql.NullBool
+
+	// Declation for basic field nodeDB.HasCheckboxButton
+	// provide the sql storage for the boolan
+	HasCheckboxButton_Data sql.NullBool
 	// encoding of pointers
 	NodePointersEnconding
 }
@@ -98,6 +102,8 @@ type NodeWOP struct {
 	Name string `xlsx:"1"`
 
 	IsExpanded bool `xlsx:"2"`
+
+	HasCheckboxButton bool `xlsx:"3"`
 	// insertion for WOP pointer fields
 }
 
@@ -106,6 +112,7 @@ var Node_Fields = []string{
 	"ID",
 	"Name",
 	"IsExpanded",
+	"HasCheckboxButton",
 }
 
 type BackRepoNodeStruct struct {
@@ -451,6 +458,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNode(node *models.Node) {
 
 	nodeDB.IsExpanded_Data.Bool = node.IsExpanded
 	nodeDB.IsExpanded_Data.Valid = true
+
+	nodeDB.HasCheckboxButton_Data.Bool = node.HasCheckboxButton
+	nodeDB.HasCheckboxButton_Data.Valid = true
 }
 
 // CopyBasicFieldsFromNodeWOP
@@ -462,6 +472,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNodeWOP(node *NodeWOP) {
 
 	nodeDB.IsExpanded_Data.Bool = node.IsExpanded
 	nodeDB.IsExpanded_Data.Valid = true
+
+	nodeDB.HasCheckboxButton_Data.Bool = node.HasCheckboxButton
+	nodeDB.HasCheckboxButton_Data.Valid = true
 }
 
 // CopyBasicFieldsToNode
@@ -469,6 +482,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNode(node *models.Node) {
 	// insertion point for checkout of basic fields (back repo to stage)
 	node.Name = nodeDB.Name_Data.String
 	node.IsExpanded = nodeDB.IsExpanded_Data.Bool
+	node.HasCheckboxButton = nodeDB.HasCheckboxButton_Data.Bool
 }
 
 // CopyBasicFieldsToNodeWOP
@@ -477,6 +491,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNodeWOP(node *NodeWOP) {
 	// insertion point for checkout of basic fields (back repo to stage)
 	node.Name = nodeDB.Name_Data.String
 	node.IsExpanded = nodeDB.IsExpanded_Data.Bool
+	node.HasCheckboxButton = nodeDB.HasCheckboxButton_Data.Bool
 }
 
 // Backup generates a json file from a slice of all NodeDB instances in the backrepo

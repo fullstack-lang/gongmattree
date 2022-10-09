@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"gongmattree/go/models"
+	"github.com/fullstack-lang/gongmattree/go/models"
 )
 
 func init() {
@@ -38,22 +38,27 @@ func stageInjection() {
 	// Node Child 1 values setup
 	__Node__000000_Child_1.Name = `Child 1`
 	__Node__000000_Child_1.IsExpanded = true
+	__Node__000000_Child_1.HasCheckboxButton = true
 
 	// Node Child 2 values setup
 	__Node__000001_Child_2.Name = `Child 2`
 	__Node__000001_Child_2.IsExpanded = false
+	__Node__000001_Child_2.HasCheckboxButton = true
 
 	// Node Child 3 values setup
 	__Node__000002_Child_3.Name = `Child 3`
 	__Node__000002_Child_3.IsExpanded = false
+	__Node__000002_Child_3.HasCheckboxButton = true
 
 	// Node Grand Child 1.1 values setup
 	__Node__000003_Grand_Child_1_1.Name = `Grand Child 1.1`
 	__Node__000003_Grand_Child_1_1.IsExpanded = false
+	__Node__000003_Grand_Child_1_1.HasCheckboxButton = true
 
 	// Node Parent values setup
 	__Node__000004_Parent.Name = `Parent`
 	__Node__000004_Parent.IsExpanded = true
+	__Node__000004_Parent.HasCheckboxButton = false
 
 	// Tree Root values setup
 	__Tree__000000_Root.Name = `Root`

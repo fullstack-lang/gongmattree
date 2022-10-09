@@ -35,6 +35,7 @@ export class NodeDetailComponent implements OnInit {
 
 	// insertion point for declarations
 	IsExpandedFormControl: UntypedFormControl = new UntypedFormControl(false);
+	HasCheckboxButtonFormControl: UntypedFormControl = new UntypedFormControl(false);
 
 	// the NodeDB of interest
 	node: NodeDB = new NodeDB
@@ -133,6 +134,7 @@ export class NodeDetailComponent implements OnInit {
 
 				// insertion point for recovery of form controls value for bool fields
 				this.IsExpandedFormControl.setValue(this.node.IsExpanded)
+				this.HasCheckboxButtonFormControl.setValue(this.node.HasCheckboxButton)
 			}
 		)
 
@@ -146,6 +148,7 @@ export class NodeDetailComponent implements OnInit {
 
 		// insertion point for translation/nullation of each field
 		this.node.IsExpanded = this.IsExpandedFormControl.value
+		this.node.HasCheckboxButton = this.HasCheckboxButtonFormControl.value
 		if (this.node.ButtonID == undefined) {
 			this.node.ButtonID = new NullInt64
 		}

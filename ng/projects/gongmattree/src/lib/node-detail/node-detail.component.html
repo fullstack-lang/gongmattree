@@ -24,6 +24,9 @@
     <!-- -->
     <mat-checkbox [formControl]="IsExpandedFormControl">IsExpanded</mat-checkbox>
 
+    <!-- -->
+    <mat-checkbox [formControl]="HasCheckboxButtonFormControl">HasCheckboxButton</mat-checkbox>
+
     <mat-grid-list cols="5" rowHeight="2:1">
         <mat-grid-tile [colspan]="3">
             <button mat-raised-button (click)="openReverseSelection('Node', 'Node_ChildrenDBID', 'ONE_MANY_ASSOCIATION_MODE', '', '', '')">Children</button>

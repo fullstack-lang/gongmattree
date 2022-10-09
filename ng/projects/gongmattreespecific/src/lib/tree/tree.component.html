@@ -1,8 +1,18 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
     <!-- This is the tree node template for leaf nodes -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+
+
+
+
         <!-- use a disabled button to provide padding for tree leaf -->
-        <button mat-icon-button disabled></button> {{node.name}}
+        <button mat-icon-button disabled></button>
+        <mat-checkbox *ngIf="node.gongNode.HasCheckboxButton" class="checklist-leaf-node">
+            {{node.name}}
+        </mat-checkbox>
+        <div *ngIf="!node.gongNode.HasCheckboxButton">
+            {{node.name}}
+        </div>
     </mat-tree-node>
     <!-- This is the tree node template for expandable nodes -->
     <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
@@ -11,6 +21,12 @@
                 {{treeControl.isExpanded(node) ?
                 'expand_more' : 'chevron_right'}}
             </mat-icon>
-        </button> {{node.name}}
+        </button>
+        <mat-checkbox *ngIf="node.gongNode.HasCheckboxButton" class="checklist-leaf-node">
+            {{node.name}}
+        </mat-checkbox>
+        <div *ngIf="!node.gongNode.HasCheckboxButton">
+            {{node.name}}
+        </div>
     </mat-tree-node>
 </mat-tree>

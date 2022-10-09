@@ -66,7 +66,7 @@ func (impl *BeforeCommitImplementation) BeforeCommit(stage *models.StageStruct) 
 	defer file.Close()
 
 	models.Stage.Checkout()
-	models.Stage.Marshall(file, "gongmattree/go/models", "main")
+	models.Stage.Marshall(file, "github.com/fullstack-lang/gongmattree/go/models", "main")
 }
 
 func main() {
@@ -124,7 +124,7 @@ func main() {
 		defer file.Close()
 
 		models.Stage.Checkout()
-		models.Stage.Marshall(file, "gongmattree/go/models", "main")
+		models.Stage.Marshall(file, "github.com/fullstack-lang/gongmattree/go/models", "main")
 		os.Exit(0)
 	}
 
