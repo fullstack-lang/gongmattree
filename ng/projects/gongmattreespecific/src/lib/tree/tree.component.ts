@@ -12,7 +12,7 @@ import * as gongmattree from 'gongmattree'
  */
 interface Node {
   name: string;
-  expanded: boolean;
+
   gongNode: gongmattree.NodeDB;
   children?: Node[];
 }
@@ -20,7 +20,7 @@ interface Node {
 /** Flat node with expandable and level information */
 interface FlatNode {
   expandable: boolean;
-  expanded: boolean;
+
   name: string;
   gongNode: gongmattree.NodeDB;
   level: number;
@@ -36,7 +36,7 @@ export class TreeComponent implements OnInit {
   private _transformer = (node: Node, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
-      expanded: node.expanded,
+
       gongNode: node.gongNode,
       name: node.name,
       level: level,
@@ -139,7 +139,7 @@ export class TreeComponent implements OnInit {
         // expand nodes that were exapanded before
         this.treeControl.dataNodes?.forEach(
           node => {
-            if (node.expanded) {
+            if (node.gongNode.IsExpanded) {
               this.treeControl.expand(node)
             }
           }
@@ -150,7 +150,7 @@ export class TreeComponent implements OnInit {
   }
 
   gongNodeToMatTreeNode(nodeDB: gongmattree.NodeDB): Node {
-    var matTreeNode: Node = { name: nodeDB.Name, expanded: nodeDB.IsExpanded, gongNode: nodeDB, children: [] }
+    var matTreeNode: Node = { name: nodeDB.Name, gongNode: nodeDB, children: [] }
     if (nodeDB.Children != undefined) {
       matTreeNode.children = nodeDB.Children.map(child => this.gongNodeToMatTreeNode(child))
     }
