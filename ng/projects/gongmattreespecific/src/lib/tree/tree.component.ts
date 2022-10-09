@@ -13,6 +13,7 @@ import * as gongmattree from 'gongmattree'
 interface Node {
   name: string;
   expanded: boolean;
+  gongNode: gongmattree.NodeDB;
   children?: Node[];
 }
 
@@ -21,6 +22,7 @@ interface FlatNode {
   expandable: boolean;
   expanded: boolean;
   name: string;
+  gongNode: gongmattree.NodeDB;
   level: number;
 }
 
@@ -35,6 +37,7 @@ export class TreeComponent implements OnInit {
     return {
       expandable: !!node.children && node.children.length > 0,
       expanded: node.expanded,
+      gongNode: node.gongNode,
       name: node.name,
       level: level,
     };
@@ -62,6 +65,7 @@ export class TreeComponent implements OnInit {
     private gongmattreeFrontRepoService: gongmattree.FrontRepoService,
     private gongmattreeCommitNbService: gongmattree.CommitNbService,
     private gongmattreePushFromFrontNbService: gongmattree.PushFromFrontNbService,
+    private gongmattreeNodeService: gongmattree.NodeService,
 
   ) {
     // this.dataSource.data = TREE_DATA;
@@ -146,11 +150,23 @@ export class TreeComponent implements OnInit {
   }
 
   gongNodeToMatTreeNode(nodeDB: gongmattree.NodeDB): Node {
-    var matTreeNode: Node = { name: nodeDB.Name, expanded: nodeDB.IsExpanded, children: [] }
+    var matTreeNode: Node = { name: nodeDB.Name, expanded: nodeDB.IsExpanded, gongNode: nodeDB, children: [] }
     if (nodeDB.Children != undefined) {
       matTreeNode.children = nodeDB.Children.map(child => this.gongNodeToMatTreeNode(child))
     }
 
     return matTreeNode
+  }
+
+  toggleNodeExpansion(node: FlatNode): void {
+    console.log(node.name)
+
+    node.gongNode.IsExpanded = !node.gongNode.IsExpanded
+
+    this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
+      gongmattreeNode => {
+        console.log("updated node")
+      }
+    )
   }
 }

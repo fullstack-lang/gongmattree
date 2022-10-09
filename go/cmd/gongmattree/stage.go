@@ -37,7 +37,7 @@ func stageInjection() {
 
 	// Node Child 1 values setup
 	__Node__000000_Child_1.Name = `Child 1`
-	__Node__000000_Child_1.IsExpanded = false
+	__Node__000000_Child_1.IsExpanded = true
 
 	// Node Child 2 values setup
 	__Node__000001_Child_2.Name = `Child 2`
