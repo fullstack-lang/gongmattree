@@ -15,14 +15,15 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 
-	"gongmattree/go/controllers"
-	"gongmattree/go/models"
-	"gongmattree/go/orm"
+	"github.com/fullstack-lang/gongmattree/go/controllers"
+	"github.com/fullstack-lang/gongmattree/go/models"
+	"github.com/fullstack-lang/gongmattree/go/orm"
 
 	// gong stack for model analysis
 	gong_controllers "github.com/fullstack-lang/gong/go/controllers"
 	gong_models "github.com/fullstack-lang/gong/go/models"
 	gong_orm "github.com/fullstack-lang/gong/go/orm"
+
 	// insertion point for gong front end import
 	_ "github.com/fullstack-lang/gong/ng"
 
@@ -30,10 +31,11 @@ import (
 	gongdoc_controllers "github.com/fullstack-lang/gongdoc/go/controllers"
 	gongdoc_models "github.com/fullstack-lang/gongdoc/go/models"
 	gongdoc_orm "github.com/fullstack-lang/gongdoc/go/orm"
+
 	// insertion point for gong front end import
 	_ "github.com/fullstack-lang/gongdoc/ng"
 
-	gongmattree "gongmattree"
+	gongmattree "github.com/fullstack-lang/gongmattree"
 )
 
 var (

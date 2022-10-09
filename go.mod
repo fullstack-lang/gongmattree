@@ -1,10 +1,10 @@
-module gongmattree
+module github.com/fullstack-lang/gongmattree
 
 go 1.19
 
 require (
-	github.com/fullstack-lang/gong v0.0.0-20221006194646-34a5b56caeee
-	github.com/fullstack-lang/gongdoc v0.0.0-20221006194649-3b1712d88978
+	github.com/fullstack-lang/gong v0.0.0-20221009155059-1f4acf692b4a
+	github.com/fullstack-lang/gongdoc v0.0.0-20221009155129-8c5ddbc62150
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.8.1

@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"gongmattree/go/models"
+	"github.com/fullstack-lang/gongmattree/go/models"
 )
 
 func init() {
@@ -54,5 +54,3 @@ func stageInjection() {
 	__Node__000002_Parent.Children = append(__Node__000002_Parent.Children, __Node__000001_Child_2)
 	__Tree__000000_Root.RootNode = __Node__000002_Parent
 }
-
-

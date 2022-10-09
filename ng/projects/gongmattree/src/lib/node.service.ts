@@ -44,7 +44,7 @@ export class NodeService {
     origin = origin.replace("4200", "8080")
 
     // compute path to the service
-    this.nodesUrl = origin + '/api/gongmattree/go/v1/nodes';
+    this.nodesUrl = origin + '/api/github.com/fullstack-lang/gongmattree/go/v1/nodes';
   }
 
   /** GET nodes from the server */

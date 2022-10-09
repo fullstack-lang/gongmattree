@@ -76,7 +76,7 @@ export class TreePresentationComponent implements OnInit {
 	setPresentationRouterOutlet(structName: string, ID: number) {
 		this.router.navigate([{
 			outlets: {
-				gongmattree_go_presentation: ["gongmattree_go-" + structName + "-presentation", ID]
+				github_com_fullstack_lang_gongmattree_go_presentation: ["github_com_fullstack_lang_gongmattree_go-" + structName + "-presentation", ID]
 			}
 		}]);
 	}
@@ -85,7 +85,7 @@ export class TreePresentationComponent implements OnInit {
 	setEditorRouterOutlet(ID: number) {
 		this.router.navigate([{
 			outlets: {
-				gongmattree_go_editor: ["gongmattree_go-" + "tree-detail", ID]
+				github_com_fullstack_lang_gongmattree_go_editor: ["github_com_fullstack_lang_gongmattree_go-" + "tree-detail", ID]
 			}
 		}]);
 	}

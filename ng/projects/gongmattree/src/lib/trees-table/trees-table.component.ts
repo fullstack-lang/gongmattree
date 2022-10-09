@@ -224,14 +224,14 @@ export class TreesTableComponent implements OnInit {
 
   // display tree in router
   displayTreeInRouter(treeID: number) {
-    this.router.navigate(["gongmattree_go-" + "tree-display", treeID])
+    this.router.navigate(["github_com_fullstack_lang_gongmattree_go-" + "tree-display", treeID])
   }
 
   // set editor outlet
   setEditorRouterOutlet(treeID: number) {
     this.router.navigate([{
       outlets: {
-        gongmattree_go_editor: ["gongmattree_go-" + "tree-detail", treeID]
+        github_com_fullstack_lang_gongmattree_go_editor: ["github_com_fullstack_lang_gongmattree_go-" + "tree-detail", treeID]
       }
     }]);
   }
@@ -240,7 +240,7 @@ export class TreesTableComponent implements OnInit {
   setPresentationRouterOutlet(treeID: number) {
     this.router.navigate([{
       outlets: {
-        gongmattree_go_presentation: ["gongmattree_go-" + "tree-presentation", treeID]
+        github_com_fullstack_lang_gongmattree_go_presentation: ["github_com_fullstack_lang_gongmattree_go-" + "tree-presentation", treeID]
       }
     }]);
   }

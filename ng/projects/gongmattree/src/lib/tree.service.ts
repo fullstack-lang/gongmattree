@@ -44,7 +44,7 @@ export class TreeService {
     origin = origin.replace("4200", "8080")
 
     // compute path to the service
-    this.treesUrl = origin + '/api/gongmattree/go/v1/trees';
+    this.treesUrl = origin + '/api/github.com/fullstack-lang/gongmattree/go/v1/trees';
   }
 
   /** GET trees from the server */

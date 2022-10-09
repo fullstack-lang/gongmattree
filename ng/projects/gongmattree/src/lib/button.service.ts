@@ -43,7 +43,7 @@ export class ButtonService {
     origin = origin.replace("4200", "8080")
 
     // compute path to the service
-    this.buttonsUrl = origin + '/api/gongmattree/go/v1/buttons';
+    this.buttonsUrl = origin + '/api/github.com/fullstack-lang/gongmattree/go/v1/buttons';
   }
 
   /** GET buttons from the server */

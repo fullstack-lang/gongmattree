@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"gongmattree/go/models"
-	"gongmattree/go/orm"
+	"github.com/fullstack-lang/gongmattree/go/models"
+	"github.com/fullstack-lang/gongmattree/go/orm"
 
 	"github.com/gin-gonic/gin"
 )

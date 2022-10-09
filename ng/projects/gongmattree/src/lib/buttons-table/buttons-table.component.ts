@@ -216,14 +216,14 @@ export class ButtonsTableComponent implements OnInit {
 
   // display button in router
   displayButtonInRouter(buttonID: number) {
-    this.router.navigate(["gongmattree_go-" + "button-display", buttonID])
+    this.router.navigate(["github_com_fullstack_lang_gongmattree_go-" + "button-display", buttonID])
   }
 
   // set editor outlet
   setEditorRouterOutlet(buttonID: number) {
     this.router.navigate([{
       outlets: {
-        gongmattree_go_editor: ["gongmattree_go-" + "button-detail", buttonID]
+        github_com_fullstack_lang_gongmattree_go_editor: ["github_com_fullstack_lang_gongmattree_go-" + "button-detail", buttonID]
       }
     }]);
   }
@@ -232,7 +232,7 @@ export class ButtonsTableComponent implements OnInit {
   setPresentationRouterOutlet(buttonID: number) {
     this.router.navigate([{
       outlets: {
-        gongmattree_go_presentation: ["gongmattree_go-" + "button-presentation", buttonID]
+        github_com_fullstack_lang_gongmattree_go_presentation: ["github_com_fullstack_lang_gongmattree_go-" + "button-presentation", buttonID]
       }
     }]);
   }

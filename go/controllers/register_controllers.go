@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"gongmattree/go/orm"
+	"github.com/fullstack-lang/gongmattree/go/orm"
 )
 
 // genQuery return the name of the column
@@ -41,7 +41,7 @@ type ValidationError struct {
 
 // RegisterControllers register controllers
 func RegisterControllers(r *gin.Engine) {
-	v1 := r.Group("/api/gongmattree/go")
+	v1 := r.Group("/api/github.com/fullstack-lang/gongmattree/go")
 	{ // insertion point for registrations
 		v1.GET("/v1/buttons", GetButtons)
 		v1.GET("/v1/buttons/:id", GetButton)

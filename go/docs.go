@@ -3,7 +3,7 @@
 // gongmattree exposes types of a package.
 //
 //     Schemes: http
-//     BasePath: /api/gongmattree/go/v1
+//     BasePath: /api/github.com/fullstack-lang/gongmattree/go/v1
 //     Version: 0.1
 //     Host: localhost:8080
 //

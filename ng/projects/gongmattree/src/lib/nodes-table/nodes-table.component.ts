@@ -242,14 +242,14 @@ export class NodesTableComponent implements OnInit {
 
   // display node in router
   displayNodeInRouter(nodeID: number) {
-    this.router.navigate(["gongmattree_go-" + "node-display", nodeID])
+    this.router.navigate(["github_com_fullstack_lang_gongmattree_go-" + "node-display", nodeID])
   }
 
   // set editor outlet
   setEditorRouterOutlet(nodeID: number) {
     this.router.navigate([{
       outlets: {
-        gongmattree_go_editor: ["gongmattree_go-" + "node-detail", nodeID]
+        github_com_fullstack_lang_gongmattree_go_editor: ["github_com_fullstack_lang_gongmattree_go-" + "node-detail", nodeID]
       }
     }]);
   }
@@ -258,7 +258,7 @@ export class NodesTableComponent implements OnInit {
   setPresentationRouterOutlet(nodeID: number) {
     this.router.navigate([{
       outlets: {
-        gongmattree_go_presentation: ["gongmattree_go-" + "node-presentation", nodeID]
+        github_com_fullstack_lang_gongmattree_go_presentation: ["github_com_fullstack_lang_gongmattree_go-" + "node-presentation", nodeID]
       }
     }]);
   }
