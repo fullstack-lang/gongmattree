@@ -12,8 +12,8 @@ import * as gongmattree from 'gongmattree'
 export class AppComponent implements OnInit {
 
   // choices for the top radio button
-  tree = "tree"
-  view = 'Default view'
+  view = 'Tree'
+  tree = 'Tree'
   default = 'Default view'
   diagrams = 'UML view'
   meta = 'Meta view'

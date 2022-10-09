@@ -31,7 +31,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   ],
   imports: [
     MatTreeModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   exports: [
     GongmattreespecificComponent,
