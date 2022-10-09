@@ -10,37 +10,17 @@ import * as gongmattree from 'gongmattree'
  * Food data with nested structure.
  * Each node has a name and an optional list of children.
  */
-interface FoodNode {
+interface Node {
   name: string;
-  children?: FoodNode[];
+  children?: Node[];
 }
 
 /** Flat node with expandable and level information */
-interface ExampleFlatNode {
+interface FlatNode {
   expandable: boolean;
   name: string;
   level: number;
 }
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    children: [{ name: 'Apple' }, { name: 'Banana' }, { name: 'Fruit loops' }],
-  },
-  {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
-      },
-      {
-        name: 'Orange',
-        children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
-      },
-    ],
-  },
-];
 
 @Component({
   selector: 'lib-tree',
@@ -49,7 +29,7 @@ const TREE_DATA: FoodNode[] = [
 })
 export class TreeComponent implements OnInit {
 
-  private _transformer = (node: FoodNode, level: number) => {
+  private _transformer = (node: Node, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
@@ -57,7 +37,7 @@ export class TreeComponent implements OnInit {
     };
   };
 
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
+  treeControl = new FlatTreeControl<FlatNode>(
     node => node.level,
     node => node.expandable,
   );
@@ -71,7 +51,7 @@ export class TreeComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode) => node.expandable;
 
   public gongmattreeFrontRepo?: gongmattree.FrontRepo
 
@@ -81,7 +61,7 @@ export class TreeComponent implements OnInit {
     private gongmattreePushFromFrontNbService: gongmattree.PushFromFrontNbService,
 
   ) {
-    this.dataSource.data = TREE_DATA;
+    // this.dataSource.data = TREE_DATA;
   }
 
 
@@ -102,28 +82,28 @@ export class TreeComponent implements OnInit {
         this.currTime = currTime
 
         // see above for the explanation
-        // this.gongmattreeCommitNbService.getCommitNb().subscribe(
-        //   commitNb => {
-        //     if (this.lastCommitNb < commitNb) {
+        this.gongmattreeCommitNbService.getCommitNb().subscribe(
+          commitNb => {
+            if (this.lastCommitNb < commitNb) {
 
-        //       console.log("last commit nb " + this.lastCommitNb + " new: " + commitNb)
-        //       // this.refresh()
-        //       this.lastCommitNb = commitNb
-        //     }
-        //   }
-        // )
+              console.log("last commit nb " + this.lastCommitNb + " new: " + commitNb)
+              this.refresh()
+              this.lastCommitNb = commitNb
+            }
+          }
+        )
 
         // see above for the explanation
-        // this.gongmattreePushFromFrontNbService.getPushFromFrontNb().subscribe(
-        //   pushFromFrontNb => {
-        //     if (this.lastPushFromFrontNb < pushFromFrontNb) {
+        this.gongmattreePushFromFrontNbService.getPushFromFrontNb().subscribe(
+          pushFromFrontNb => {
+            if (this.lastPushFromFrontNb < pushFromFrontNb) {
 
-        //       console.log("last commit nb " + this.lastPushFromFrontNb + " new: " + pushFromFrontNb)
-        //       // this.refresh()
-        //       this.lastPushFromFrontNb = pushFromFrontNb
-        //     }
-        //   }
-        // )
+              console.log("last commit nb " + this.lastPushFromFrontNb + " new: " + pushFromFrontNb)
+              this.refresh()
+              this.lastPushFromFrontNb = pushFromFrontNb
+            }
+          }
+        )
       }
     )
   }
@@ -134,9 +114,34 @@ export class TreeComponent implements OnInit {
       gongmattreesFrontRepo => {
         this.gongmattreeFrontRepo = gongmattreesFrontRepo
 
-      }
 
+        if (this.gongmattreeFrontRepo.Trees_array.length != 1) {
+          console.log("error: there should be exactly one tree")
+          return
+        }
+        var treeSingloton = this.gongmattreeFrontRepo.Trees_array[0]
+
+        if (treeSingloton.RootNode == undefined) {
+          console.log("error: there should be a root node")
+          return
+        }
+        var rootNode = treeSingloton.RootNode
+
+        this.dataSource.data = [this.gongNodeToMatTreeNode(rootNode)]
+
+        // this.dataSource.data.concat({ name: rootNode.Name, children: [] })
+      }
     )
   }
 
+  gongNodeToMatTreeNode(nodeDB: gongmattree.NodeDB): Node {
+    var matTreeNode: Node = { name: nodeDB.Name, children: [] }
+    if (nodeDB.Children == undefined) {
+      matTreeNode = { name: nodeDB.Name, children: [] }
+    } else {
+      matTreeNode = { name: nodeDB.Name, children: nodeDB.Children.map(child => this.gongNodeToMatTreeNode(child)) }
+    }
+
+    return matTreeNode
+  }
 }
