@@ -33,6 +33,7 @@ import { GongdocdiagramsModule } from 'gongdocdiagrams'
 import { GongModule } from 'gong'
 
 import { GongmattreeModule } from 'gongmattree'
+import { GongmattreespecificModule } from 'gongmattreespecific'
 import { GongstructSelectionService } from 'gongmattree'
 
 // mandatory
@@ -73,7 +74,8 @@ import { HttpClientModule } from '@angular/common/http';
     GongdocModule,
     GongdocdiagramsModule,
 
-    GongmattreeModule
+    GongmattreeModule,
+    GongmattreespecificModule
   ],
   providers: [
     GongstructSelectionService

@@ -12,11 +12,12 @@ import * as gongmattree from 'gongmattree'
 export class AppComponent implements OnInit {
 
   // choices for the top radio button
+  tree = "tree"
   view = 'Default view'
   default = 'Default view'
   diagrams = 'UML view'
   meta = 'Meta view'
-  views: string[] = [this.default, this.diagrams, this.meta];
+  views: string[] = [this.tree, this.default, this.diagrams, this.meta];
 
   // variable that enables pooling of selected gongstruct
   obsTimer: Observable<number> = timer(1000, 1000)
