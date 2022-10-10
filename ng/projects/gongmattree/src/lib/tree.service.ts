@@ -14,7 +14,6 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { TreeDB } from './tree-db';
 
 // insertion point for imports
-import { NodeDB } from './node-db'
 
 @Injectable({
   providedIn: 'root'
@@ -71,7 +70,7 @@ export class TreeService {
   postTree(treedb: TreeDB): Observable<TreeDB> {
 
     // insertion point for reset of pointers and reverse pointers (to avoid circular JSON)
-    treedb.RootNode = new NodeDB
+    treedb.RootNodes = []
 
     return this.http.post<TreeDB>(this.treesUrl, treedb, this.httpOptions).pipe(
       tap(_ => {
@@ -99,7 +98,7 @@ export class TreeService {
     const url = `${this.treesUrl}/${id}`;
 
     // insertion point for reset of pointers and reverse pointers (to avoid circular JSON)
-    treedb.RootNode = new NodeDB
+    treedb.RootNodes = []
 
     return this.http.put<TreeDB>(url, treedb, this.httpOptions).pipe(
       tap(_ => {

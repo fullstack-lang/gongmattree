@@ -11,8 +11,6 @@ import { CommitNbService } from '../commitnb.service'
 import { GongstructSelectionService } from '../gongstruct-selection.service'
 
 // insertion point for per struct import code
-import { ButtonService } from '../button.service'
-import { getButtonUniqueID } from '../front-repo.service'
 import { NodeService } from '../node.service'
 import { getNodeUniqueID } from '../front-repo.service'
 import { TreeService } from '../tree.service'
@@ -159,7 +157,6 @@ export class SidebarComponent implements OnInit {
     private gongstructSelectionService: GongstructSelectionService,
 
     // insertion point for per struct service declaration
-    private buttonService: ButtonService,
     private nodeService: NodeService,
     private treeService: TreeService,
   ) { }
@@ -189,14 +186,6 @@ export class SidebarComponent implements OnInit {
     )
 
     // insertion point for per struct observable for refresh trigger
-    // observable for changes in structs
-    this.buttonService.ButtonServiceChanged.subscribe(
-      message => {
-        if (message == "post" || message == "update" || message == "delete") {
-          this.refresh()
-        }
-      }
-    )
     // observable for changes in structs
     this.nodeService.NodeServiceChanged.subscribe(
       message => {
@@ -237,50 +226,6 @@ export class SidebarComponent implements OnInit {
       this.gongNodeTree = new Array<GongNode>();
 
       // insertion point for per struct tree construction
-      /**
-      * fill up the Button part of the mat tree
-      */
-      let buttonGongNodeStruct: GongNode = {
-        name: "Button",
-        type: GongNodeType.STRUCT,
-        id: 0,
-        uniqueIdPerStack: 13 * nonInstanceNodeId,
-        structName: "Button",
-        associationField: "",
-        associatedStructName: "",
-        children: new Array<GongNode>()
-      }
-      nonInstanceNodeId = nonInstanceNodeId + 1
-      this.gongNodeTree.push(buttonGongNodeStruct)
-
-      this.frontRepo.Buttons_array.sort((t1, t2) => {
-        if (t1.Name > t2.Name) {
-          return 1;
-        }
-        if (t1.Name < t2.Name) {
-          return -1;
-        }
-        return 0;
-      });
-
-      this.frontRepo.Buttons_array.forEach(
-        buttonDB => {
-          let buttonGongNodeInstance: GongNode = {
-            name: buttonDB.Name,
-            type: GongNodeType.INSTANCE,
-            id: buttonDB.ID,
-            uniqueIdPerStack: getButtonUniqueID(buttonDB.ID),
-            structName: "Button",
-            associationField: "",
-            associatedStructName: "",
-            children: new Array<GongNode>()
-          }
-          buttonGongNodeStruct.children!.push(buttonGongNodeInstance)
-
-          // insertion point for per field code
-        }
-      )
-
       /**
       * fill up the Node part of the mat tree
       */
@@ -354,41 +299,6 @@ export class SidebarComponent implements OnInit {
             ChildrenGongNodeAssociation.children.push(nodeNode)
           })
 
-          /**
-          * let append a node for the association Button
-          */
-          let ButtonGongNodeAssociation: GongNode = {
-            name: "(Button) Button",
-            type: GongNodeType.ONE__ZERO_ONE_ASSOCIATION,
-            id: nodeDB.ID,
-            uniqueIdPerStack: 17 * nonInstanceNodeId,
-            structName: "Node",
-            associationField: "Button",
-            associatedStructName: "Button",
-            children: new Array<GongNode>()
-          }
-          nonInstanceNodeId = nonInstanceNodeId + 1
-          nodeGongNodeInstance.children!.push(ButtonGongNodeAssociation)
-
-          /**
-            * let append a node for the instance behind the asssociation Button
-            */
-          if (nodeDB.Button != undefined) {
-            let nodeGongNodeInstance_Button: GongNode = {
-              name: nodeDB.Button.Name,
-              type: GongNodeType.INSTANCE,
-              id: nodeDB.Button.ID,
-              uniqueIdPerStack: // godel numbering (thank you kurt)
-                3 * getNodeUniqueID(nodeDB.ID)
-                + 5 * getButtonUniqueID(nodeDB.Button.ID),
-              structName: "Button",
-              associationField: "",
-              associatedStructName: "",
-              children: new Array<GongNode>()
-            }
-            ButtonGongNodeAssociation.children.push(nodeGongNodeInstance_Button)
-          }
-
         }
       )
 
@@ -434,39 +344,36 @@ export class SidebarComponent implements OnInit {
 
           // insertion point for per field code
           /**
-          * let append a node for the association RootNode
+          * let append a node for the slide of pointer RootNodes
           */
-          let RootNodeGongNodeAssociation: GongNode = {
-            name: "(Node) RootNode",
-            type: GongNodeType.ONE__ZERO_ONE_ASSOCIATION,
+          let RootNodesGongNodeAssociation: GongNode = {
+            name: "(Node) RootNodes",
+            type: GongNodeType.ONE__ZERO_MANY_ASSOCIATION,
             id: treeDB.ID,
-            uniqueIdPerStack: 17 * nonInstanceNodeId,
+            uniqueIdPerStack: 19 * nonInstanceNodeId,
             structName: "Tree",
-            associationField: "RootNode",
+            associationField: "RootNodes",
             associatedStructName: "Node",
             children: new Array<GongNode>()
           }
           nonInstanceNodeId = nonInstanceNodeId + 1
-          treeGongNodeInstance.children!.push(RootNodeGongNodeAssociation)
+          treeGongNodeInstance.children.push(RootNodesGongNodeAssociation)
 
-          /**
-            * let append a node for the instance behind the asssociation RootNode
-            */
-          if (treeDB.RootNode != undefined) {
-            let treeGongNodeInstance_RootNode: GongNode = {
-              name: treeDB.RootNode.Name,
+          treeDB.RootNodes?.forEach(nodeDB => {
+            let nodeNode: GongNode = {
+              name: nodeDB.Name,
               type: GongNodeType.INSTANCE,
-              id: treeDB.RootNode.ID,
+              id: nodeDB.ID,
               uniqueIdPerStack: // godel numbering (thank you kurt)
-                3 * getTreeUniqueID(treeDB.ID)
-                + 5 * getNodeUniqueID(treeDB.RootNode.ID),
+                7 * getTreeUniqueID(treeDB.ID)
+                + 11 * getNodeUniqueID(nodeDB.ID),
               structName: "Node",
               associationField: "",
               associatedStructName: "",
               children: new Array<GongNode>()
             }
-            RootNodeGongNodeAssociation.children.push(treeGongNodeInstance_RootNode)
-          }
+            RootNodesGongNodeAssociation.children.push(nodeNode)
+          })
 
         }
       )

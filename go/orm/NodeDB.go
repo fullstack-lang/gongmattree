@@ -46,15 +46,17 @@ type NodeAPI struct {
 type NodePointersEnconding struct {
 	// insertion for pointer fields encoding declaration
 
-	// field Button is a pointer to another Struct (optional or 0..1)
-	// This field is generated into another field to enable AS ONE association
-	ButtonID sql.NullInt64
-
 	// Implementation of a reverse ID for field Node{}.Children []*Node
 	Node_ChildrenDBID sql.NullInt64
 
 	// implementation of the index of the withing the slice
 	Node_ChildrenDBID_Index sql.NullInt64
+
+	// Implementation of a reverse ID for field Tree{}.RootNodes []*Node
+	Tree_RootNodesDBID sql.NullInt64
+
+	// implementation of the index of the withing the slice
+	Tree_RootNodesDBID_Index sql.NullInt64
 }
 
 // NodeDB describes a node in the database
@@ -78,6 +80,10 @@ type NodeDB struct {
 	// Declation for basic field nodeDB.HasCheckboxButton
 	// provide the sql storage for the boolan
 	HasCheckboxButton_Data sql.NullBool
+
+	// Declation for basic field nodeDB.IsChecked
+	// provide the sql storage for the boolan
+	IsChecked_Data sql.NullBool
 	// encoding of pointers
 	NodePointersEnconding
 }
@@ -104,6 +110,8 @@ type NodeWOP struct {
 	IsExpanded bool `xlsx:"2"`
 
 	HasCheckboxButton bool `xlsx:"3"`
+
+	IsChecked bool `xlsx:"4"`
 	// insertion for WOP pointer fields
 }
 
@@ -113,6 +121,7 @@ var Node_Fields = []string{
 	"Name",
 	"IsExpanded",
 	"HasCheckboxButton",
+	"IsChecked",
 }
 
 type BackRepoNodeStruct struct {
@@ -275,15 +284,6 @@ func (backRepoNode *BackRepoNodeStruct) CommitPhaseTwoInstance(backRepo *BackRep
 			}
 		}
 
-		// commit pointer value node.Button translates to updating the node.ButtonID
-		nodeDB.ButtonID.Valid = true // allow for a 0 value (nil association)
-		if node.Button != nil {
-			if ButtonId, ok := (*backRepo.BackRepoButton.Map_ButtonPtr_ButtonDBID)[node.Button]; ok {
-				nodeDB.ButtonID.Int64 = int64(ButtonId)
-				nodeDB.ButtonID.Valid = true
-			}
-		}
-
 		query := backRepoNode.db.Save(&nodeDB)
 		if query.Error != nil {
 			return query.Error
@@ -416,10 +416,6 @@ func (backRepoNode *BackRepoNodeStruct) CheckoutPhaseTwoInstance(backRepo *BackR
 		return nodeDB_i.Node_ChildrenDBID_Index.Int64 < nodeDB_j.Node_ChildrenDBID_Index.Int64
 	})
 
-	// Button field
-	if nodeDB.ButtonID.Int64 != 0 {
-		node.Button = (*backRepo.BackRepoButton.Map_ButtonDBID_ButtonPtr)[uint(nodeDB.ButtonID.Int64)]
-	}
 	return
 }
 
@@ -461,6 +457,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNode(node *models.Node) {
 
 	nodeDB.HasCheckboxButton_Data.Bool = node.HasCheckboxButton
 	nodeDB.HasCheckboxButton_Data.Valid = true
+
+	nodeDB.IsChecked_Data.Bool = node.IsChecked
+	nodeDB.IsChecked_Data.Valid = true
 }
 
 // CopyBasicFieldsFromNodeWOP
@@ -475,6 +474,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNodeWOP(node *NodeWOP) {
 
 	nodeDB.HasCheckboxButton_Data.Bool = node.HasCheckboxButton
 	nodeDB.HasCheckboxButton_Data.Valid = true
+
+	nodeDB.IsChecked_Data.Bool = node.IsChecked
+	nodeDB.IsChecked_Data.Valid = true
 }
 
 // CopyBasicFieldsToNode
@@ -483,6 +485,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNode(node *models.Node) {
 	node.Name = nodeDB.Name_Data.String
 	node.IsExpanded = nodeDB.IsExpanded_Data.Bool
 	node.HasCheckboxButton = nodeDB.HasCheckboxButton_Data.Bool
+	node.IsChecked = nodeDB.IsChecked_Data.Bool
 }
 
 // CopyBasicFieldsToNodeWOP
@@ -492,6 +495,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNodeWOP(node *NodeWOP) {
 	node.Name = nodeDB.Name_Data.String
 	node.IsExpanded = nodeDB.IsExpanded_Data.Bool
 	node.HasCheckboxButton = nodeDB.HasCheckboxButton_Data.Bool
+	node.IsChecked = nodeDB.IsChecked_Data.Bool
 }
 
 // Backup generates a json file from a slice of all NodeDB instances in the backrepo
@@ -649,16 +653,16 @@ func (backRepoNode *BackRepoNodeStruct) RestorePhaseTwo() {
 		_ = nodeDB
 
 		// insertion point for reindexing pointers encoding
-		// reindexing Button field
-		if nodeDB.ButtonID.Int64 != 0 {
-			nodeDB.ButtonID.Int64 = int64(BackRepoButtonid_atBckpTime_newID[uint(nodeDB.ButtonID.Int64)])
-			nodeDB.ButtonID.Valid = true
-		}
-
 		// This reindex node.Children
 		if nodeDB.Node_ChildrenDBID.Int64 != 0 {
 			nodeDB.Node_ChildrenDBID.Int64 =
 				int64(BackRepoNodeid_atBckpTime_newID[uint(nodeDB.Node_ChildrenDBID.Int64)])
+		}
+
+		// This reindex node.RootNodes
+		if nodeDB.Tree_RootNodesDBID.Int64 != 0 {
+			nodeDB.Tree_RootNodesDBID.Int64 =
+				int64(BackRepoTreeid_atBckpTime_newID[uint(nodeDB.Tree_RootNodesDBID.Int64)])
 		}
 
 		// update databse with new index encoding

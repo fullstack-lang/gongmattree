@@ -13,7 +13,5 @@ export class TreeDB {
 	Name: string = ""
 
 	// insertion point for other declarations
-	RootNode?: NodeDB
-	RootNodeID: NullInt64 = new NullInt64 // if pointer is null, RootNode.ID = 0
-
+	RootNodes?: Array<NodeDB>
 }

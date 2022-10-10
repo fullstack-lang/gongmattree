@@ -28,9 +28,6 @@ type GongStructInterface interface {
 // StageStruct enables storage of staged instances
 // swagger:ignore
 type StageStruct struct { // insertion point for definition of arrays registering instances
-	Buttons           map[*Button]any
-	Buttons_mapString map[string]*Button
-
 	Nodes           map[*Node]any
 	Nodes_mapString map[string]*Node
 
@@ -64,8 +61,6 @@ type BackRepoInterface interface {
 	BackupXL(stage *StageStruct, dirPath string)
 	RestoreXL(stage *StageStruct, dirPath string)
 	// insertion point for Commit and Checkout signatures
-	CommitButton(button *Button)
-	CheckoutButton(button *Button)
 	CommitNode(node *Node)
 	CheckoutNode(node *Node)
 	CommitTree(tree *Tree)
@@ -76,9 +71,6 @@ type BackRepoInterface interface {
 
 // swagger:ignore instructs the gong compiler (gongc) to avoid this particular struct
 var Stage StageStruct = StageStruct{ // insertion point for array initiatialisation
-	Buttons:           make(map[*Button]any),
-	Buttons_mapString: make(map[string]*Button),
-
 	Nodes:           make(map[*Node]any),
 	Nodes_mapString: make(map[string]*Node),
 
@@ -95,7 +87,6 @@ func (stage *StageStruct) Commit() {
 	}
 
 	// insertion point for computing the map of number of instances per gongstruct
-	stage.Map_GongStructName_InstancesNb["Button"] = len(stage.Buttons)
 	stage.Map_GongStructName_InstancesNb["Node"] = len(stage.Nodes)
 	stage.Map_GongStructName_InstancesNb["Tree"] = len(stage.Trees)
 
@@ -107,7 +98,6 @@ func (stage *StageStruct) Checkout() {
 	}
 
 	// insertion point for computing the map of number of instances per gongstruct
-	stage.Map_GongStructName_InstancesNb["Button"] = len(stage.Buttons)
 	stage.Map_GongStructName_InstancesNb["Node"] = len(stage.Nodes)
 	stage.Map_GongStructName_InstancesNb["Tree"] = len(stage.Trees)
 
@@ -142,101 +132,6 @@ func (stage *StageStruct) RestoreXL(dirPath string) {
 }
 
 // insertion point for cumulative sub template with model space calls
-// Stage puts button to the model stage
-func (button *Button) Stage() *Button {
-	Stage.Buttons[button] = __member
-	Stage.Buttons_mapString[button.Name] = button
-
-	return button
-}
-
-// Unstage removes button off the model stage
-func (button *Button) Unstage() *Button {
-	delete(Stage.Buttons, button)
-	delete(Stage.Buttons_mapString, button.Name)
-	return button
-}
-
-// commit button to the back repo (if it is already staged)
-func (button *Button) Commit() *Button {
-	if _, ok := Stage.Buttons[button]; ok {
-		if Stage.BackRepo != nil {
-			Stage.BackRepo.CommitButton(button)
-		}
-	}
-	return button
-}
-
-// Checkout button to the back repo (if it is already staged)
-func (button *Button) Checkout() *Button {
-	if _, ok := Stage.Buttons[button]; ok {
-		if Stage.BackRepo != nil {
-			Stage.BackRepo.CheckoutButton(button)
-		}
-	}
-	return button
-}
-
-//
-// Legacy, to be deleted
-//
-
-// StageCopy appends a copy of button to the model stage
-func (button *Button) StageCopy() *Button {
-	_button := new(Button)
-	*_button = *button
-	_button.Stage()
-	return _button
-}
-
-// StageAndCommit appends button to the model stage and commit to the orm repo
-func (button *Button) StageAndCommit() *Button {
-	button.Stage()
-	if Stage.AllModelsStructCreateCallback != nil {
-		Stage.AllModelsStructCreateCallback.CreateORMButton(button)
-	}
-	return button
-}
-
-// DeleteStageAndCommit appends button to the model stage and commit to the orm repo
-func (button *Button) DeleteStageAndCommit() *Button {
-	button.Unstage()
-	DeleteORMButton(button)
-	return button
-}
-
-// StageCopyAndCommit appends a copy of button to the model stage and commit to the orm repo
-func (button *Button) StageCopyAndCommit() *Button {
-	_button := new(Button)
-	*_button = *button
-	_button.Stage()
-	if Stage.AllModelsStructCreateCallback != nil {
-		Stage.AllModelsStructCreateCallback.CreateORMButton(button)
-	}
-	return _button
-}
-
-// CreateORMButton enables dynamic staging of a Button instance
-func CreateORMButton(button *Button) {
-	button.Stage()
-	if Stage.AllModelsStructCreateCallback != nil {
-		Stage.AllModelsStructCreateCallback.CreateORMButton(button)
-	}
-}
-
-// DeleteORMButton enables dynamic staging of a Button instance
-func DeleteORMButton(button *Button) {
-	button.Unstage()
-	if Stage.AllModelsStructDeleteCallback != nil {
-		Stage.AllModelsStructDeleteCallback.DeleteORMButton(button)
-	}
-}
-
-// for satisfaction of GongStruct interface
-func (button *Button) GetName() (res string) {
-	return button.Name
-}
-
 // Stage puts node to the model stage
 func (node *Node) Stage() *Node {
 	Stage.Nodes[node] = __member
@@ -429,21 +324,16 @@ func (tree *Tree) GetName() (res string) {
 
 // swagger:ignore
 type AllModelsStructCreateInterface interface { // insertion point for Callbacks on creation
-	CreateORMButton(Button *Button)
 	CreateORMNode(Node *Node)
 	CreateORMTree(Tree *Tree)
 }
 
 type AllModelsStructDeleteInterface interface { // insertion point for Callbacks on deletion
-	DeleteORMButton(Button *Button)
 	DeleteORMNode(Node *Node)
 	DeleteORMTree(Tree *Tree)
 }
 
 func (stage *StageStruct) Reset() { // insertion point for array reset
-	stage.Buttons = make(map[*Button]any)
-	stage.Buttons_mapString = make(map[string]*Button)
-
 	stage.Nodes = make(map[*Node]any)
 	stage.Nodes_mapString = make(map[string]*Node)
 
@@ -453,9 +343,6 @@ func (stage *StageStruct) Reset() { // insertion point for array reset
 }
 
 func (stage *StageStruct) Nil() { // insertion point for array nil
-	stage.Buttons = nil
-	stage.Buttons_mapString = nil
-
 	stage.Nodes = nil
 	stage.Nodes_mapString = nil
 
@@ -538,38 +425,6 @@ func (stage *StageStruct) Marshall(file *os.File, modelsPackageName, packageName
 	setValueField := ""
 
 	// insertion initialization of objects to stage
-	map_Button_Identifiers := make(map[*Button]string)
-	_ = map_Button_Identifiers
-
-	buttonOrdered := []*Button{}
-	for button := range stage.Buttons {
-		buttonOrdered = append(buttonOrdered, button)
-	}
-	sort.Slice(buttonOrdered[:], func(i, j int) bool {
-		return buttonOrdered[i].Name < buttonOrdered[j].Name
-	})
-	identifiersDecl += "\n\n	// Declarations of staged instances of Button"
-	for idx, button := range buttonOrdered {
-
-		id = generatesIdentifier("Button", idx, button.Name)
-		map_Button_Identifiers[button] = id
-
-		decl = IdentifiersDecls
-		decl = strings.ReplaceAll(decl, "{{Identifier}}", id)
-		decl = strings.ReplaceAll(decl, "{{GeneratedStructName}}", "Button")
-		decl = strings.ReplaceAll(decl, "{{GeneratedFieldNameValue}}", button.Name)
-		identifiersDecl += decl
-
-		initializerStatements += fmt.Sprintf("\n\n	// Button %s values setup", button.Name)
-		// Initialisation of values
-		setValueField = StringInitStatement
-		setValueField = strings.ReplaceAll(setValueField, "{{Identifier}}", id)
-		setValueField = strings.ReplaceAll(setValueField, "{{GeneratedFieldName}}", "Name")
-		setValueField = strings.ReplaceAll(setValueField, "{{GeneratedFieldNameValue}}", string(button.Name))
-		initializerStatements += setValueField
-
-	}
-
 	map_Node_Identifiers := make(map[*Node]string)
 	_ = map_Node_Identifiers
 
@@ -612,6 +467,12 @@ func (stage *StageStruct) Marshall(file *os.File, modelsPackageName, packageName
 		setValueField = strings.ReplaceAll(setValueField, "{{GeneratedFieldNameValue}}", fmt.Sprintf("%t", node.HasCheckboxButton))
 		initializerStatements += setValueField
 
+		setValueField = NumberInitStatement
+		setValueField = strings.ReplaceAll(setValueField, "{{Identifier}}", id)
+		setValueField = strings.ReplaceAll(setValueField, "{{GeneratedFieldName}}", "IsChecked")
+		setValueField = strings.ReplaceAll(setValueField, "{{GeneratedFieldNameValue}}", fmt.Sprintf("%t", node.IsChecked))
+		initializerStatements += setValueField
+
 	}
 
 	map_Tree_Identifiers := make(map[*Tree]string)
@@ -647,16 +508,6 @@ func (stage *StageStruct) Marshall(file *os.File, modelsPackageName, packageName
 	}
 
 	// insertion initialization of objects to stage
-	for idx, button := range buttonOrdered {
-		var setPointerField string
-		_ = setPointerField
-
-		id = generatesIdentifier("Button", idx, button.Name)
-		map_Button_Identifiers[button] = id
-
-		// Initialisation of values
-	}
-
 	for idx, node := range nodeOrdered {
 		var setPointerField string
 		_ = setPointerField
@@ -673,14 +524,6 @@ func (stage *StageStruct) Marshall(file *os.File, modelsPackageName, packageName
 			pointersInitializesStatements += setPointerField
 		}
 
-		if node.Button != nil {
-			setPointerField = PointerFieldInitStatement
-			setPointerField = strings.ReplaceAll(setPointerField, "{{Identifier}}", id)
-			setPointerField = strings.ReplaceAll(setPointerField, "{{GeneratedFieldName}}", "Button")
-			setPointerField = strings.ReplaceAll(setPointerField, "{{GeneratedFieldNameValue}}", map_Button_Identifiers[node.Button])
-			pointersInitializesStatements += setPointerField
-		}
-
 	}
 
 	for idx, tree := range treeOrdered {
@@ -691,11 +534,11 @@ func (stage *StageStruct) Marshall(file *os.File, modelsPackageName, packageName
 		map_Tree_Identifiers[tree] = id
 
 		// Initialisation of values
-		if tree.RootNode != nil {
-			setPointerField = PointerFieldInitStatement
+		for _, _node := range tree.RootNodes {
+			setPointerField = SliceOfPointersFieldInitStatement
 			setPointerField = strings.ReplaceAll(setPointerField, "{{Identifier}}", id)
-			setPointerField = strings.ReplaceAll(setPointerField, "{{GeneratedFieldName}}", "RootNode")
-			setPointerField = strings.ReplaceAll(setPointerField, "{{GeneratedFieldNameValue}}", map_Node_Identifiers[tree.RootNode])
+			setPointerField = strings.ReplaceAll(setPointerField, "{{GeneratedFieldName}}", "RootNodes")
+			setPointerField = strings.ReplaceAll(setPointerField, "{{GeneratedFieldNameValue}}", map_Node_Identifiers[_node])
 			pointersInitializesStatements += setPointerField
 		}
 
@@ -726,8 +569,6 @@ func generatesIdentifier(gongStructName string, idx int, instanceName string) (i
 
 // insertion point of functions that provide maps for reverse associations
 
-// generate function for reverse association maps of Button
-
 // generate function for reverse association maps of Node
 func (stageStruct *StageStruct) CreateReverseMap_Node_Children() (res map[*Node]*Node) {
 	res = make(map[*Node]*Node)
@@ -741,48 +582,20 @@ func (stageStruct *StageStruct) CreateReverseMap_Node_Children() (res map[*Node]
 	return
 }
 
-func (stageStruct *StageStruct) CreateReverseMap_Node_Button() (res map[*Button][]*Node) {
-	res = make(map[*Button][]*Node)
-
-	for node := range stageStruct.Nodes {
-		if node.Button != nil {
-			button_ := node.Button
-			var nodes []*Node
-			_, ok := res[button_]
-			if ok {
-				nodes = res[button_]
-			} else {
-				nodes = make([]*Node, 0)
-			}
-			nodes = append(nodes, node)
-			res[button_] = nodes
-		}
-	}
-
-	return
-}
 
 // generate function for reverse association maps of Tree
-func (stageStruct *StageStruct) CreateReverseMap_Tree_RootNode() (res map[*Node][]*Tree) {
-	res = make(map[*Node][]*Tree)
+func (stageStruct *StageStruct) CreateReverseMap_Tree_RootNodes() (res map[*Node]*Tree) {
+	res = make(map[*Node]*Tree)
 
 	for tree := range stageStruct.Trees {
-		if tree.RootNode != nil {
-			node_ := tree.RootNode
-			var trees []*Tree
-			_, ok := res[node_]
-			if ok {
-				trees = res[node_]
-			} else {
-				trees = make([]*Tree, 0)
-			}
-			trees = append(trees, tree)
-			res[node_] = trees
+		for _, node_ := range tree.RootNodes {
+			res[node_] = tree
 		}
 	}
 
 	return
 }
+
 
 // Gongstruct is the type parameter for generated generic function that allows
 // - access to staged instances
@@ -790,7 +603,7 @@ func (stageStruct *StageStruct) CreateReverseMap_Tree_RootNode() (res map[*Node]
 // - full refactoring of Gongstruct identifiers / fields
 type Gongstruct interface {
 	// insertion point for generic types
-	Button | Node | Tree
+	Node | Tree
 }
 
 // Gongstruct is the type parameter for generated generic function that allows
@@ -799,14 +612,13 @@ type Gongstruct interface {
 // - full refactoring of Gongstruct identifiers / fields
 type PointerToGongstruct interface {
 	// insertion point for generic types
-	*Button | *Node | *Tree
+	*Node | *Tree
 	GetName() string
 }
 
 type GongstructSet interface {
 	map[any]any |
 		// insertion point for generic types
-		map[*Button]any |
 		map[*Node]any |
 		map[*Tree]any |
 		map[*any]any // because go does not support an extra "|" at the end of type specifications
@@ -815,7 +627,6 @@ type GongstructSet interface {
 type GongstructMapString interface {
 	map[any]any |
 		// insertion point for generic types
-		map[string]*Button |
 		map[string]*Node |
 		map[string]*Tree |
 		map[*any]any // because go does not support an extra "|" at the end of type specifications
@@ -828,8 +639,6 @@ func GongGetSet[Type GongstructSet]() *Type {
 
 	switch any(ret).(type) {
 	// insertion point for generic get functions
-	case map[*Button]any:
-		return any(&Stage.Buttons).(*Type)
 	case map[*Node]any:
 		return any(&Stage.Nodes).(*Type)
 	case map[*Tree]any:
@@ -846,8 +655,6 @@ func GongGetMap[Type GongstructMapString]() *Type {
 
 	switch any(ret).(type) {
 	// insertion point for generic get functions
-	case map[string]*Button:
-		return any(&Stage.Buttons_mapString).(*Type)
 	case map[string]*Node:
 		return any(&Stage.Nodes_mapString).(*Type)
 	case map[string]*Tree:
@@ -864,8 +671,6 @@ func GetGongstructInstancesSet[Type Gongstruct]() *map[*Type]any {
 
 	switch any(ret).(type) {
 	// insertion point for generic get functions
-	case Button:
-		return any(&Stage.Buttons).(*map[*Type]any)
 	case Node:
 		return any(&Stage.Nodes).(*map[*Type]any)
 	case Tree:
@@ -882,8 +687,6 @@ func GetGongstructInstancesMap[Type Gongstruct]() *map[string]*Type {
 
 	switch any(ret).(type) {
 	// insertion point for generic get functions
-	case Button:
-		return any(&Stage.Buttons_mapString).(*map[string]*Type)
 	case Node:
 		return any(&Stage.Nodes_mapString).(*map[string]*Type)
 	case Tree:
@@ -902,23 +705,17 @@ func GetAssociationName[Type Gongstruct]() *Type {
 
 	switch any(ret).(type) {
 	// insertion point for instance with special fields
-	case Button:
-		return any(&Button{
-			// Initialisation of associations
-		}).(*Type)
 	case Node:
 		return any(&Node{
 			// Initialisation of associations
 			// field is initialized with an instance of Node with the name of the field
 			Children: []*Node{{Name: "Children"}},
-			// field is initialized with an instance of Button with the name of the field
-			Button: &Button{Name: "Button"},
 		}).(*Type)
 	case Tree:
 		return any(&Tree{
 			// Initialisation of associations
 			// field is initialized with an instance of Node with the name of the field
-			RootNode: &Node{Name: "RootNode"},
+			RootNodes: []*Node{{Name: "RootNodes"}},
 		}).(*Type)
 	default:
 		return nil
@@ -937,54 +734,15 @@ func GetPointerReverseMap[Start, End Gongstruct](fieldname string) map[*End][]*S
 
 	switch any(ret).(type) {
 	// insertion point of functions that provide maps for reverse associations
-	// reverse maps of direct associations of Button
-	case Button:
-		switch fieldname {
-		// insertion point for per direct association field
-		}
 	// reverse maps of direct associations of Node
 	case Node:
 		switch fieldname {
 		// insertion point for per direct association field
-		case "Button":
-			res := make(map[*Button][]*Node)
-			for node := range Stage.Nodes {
-				if node.Button != nil {
-					button_ := node.Button
-					var nodes []*Node
-					_, ok := res[button_]
-					if ok {
-						nodes = res[button_]
-					} else {
-						nodes = make([]*Node, 0)
-					}
-					nodes = append(nodes, node)
-					res[button_] = nodes
-				}
-			}
-			return any(res).(map[*End][]*Start)
 		}
 	// reverse maps of direct associations of Tree
 	case Tree:
 		switch fieldname {
 		// insertion point for per direct association field
-		case "RootNode":
-			res := make(map[*Node][]*Tree)
-			for tree := range Stage.Trees {
-				if tree.RootNode != nil {
-					node_ := tree.RootNode
-					var trees []*Tree
-					_, ok := res[node_]
-					if ok {
-						trees = res[node_]
-					} else {
-						trees = make([]*Tree, 0)
-					}
-					trees = append(trees, tree)
-					res[node_] = trees
-				}
-			}
-			return any(res).(map[*End][]*Start)
 		}
 	}
 	return nil
@@ -1001,11 +759,6 @@ func GetSliceOfPointersReverseMap[Start, End Gongstruct](fieldname string) map[*
 
 	switch any(ret).(type) {
 	// insertion point of functions that provide maps for reverse associations
-	// reverse maps of direct associations of Button
-	case Button:
-		switch fieldname {
-		// insertion point for per direct association field
-		}
 	// reverse maps of direct associations of Node
 	case Node:
 		switch fieldname {
@@ -1023,6 +776,14 @@ func GetSliceOfPointersReverseMap[Start, End Gongstruct](fieldname string) map[*
 	case Tree:
 		switch fieldname {
 		// insertion point for per direct association field
+		case "RootNodes":
+			res := make(map[*Node]*Tree)
+			for tree := range Stage.Trees {
+				for _, node_ := range tree.RootNodes {
+					res[node_] = tree
+				}
+			}
+			return any(res).(map[*End]*Start)
 		}
 	}
 	return nil
@@ -1036,8 +797,6 @@ func GetGongstructName[Type Gongstruct]() (res string) {
 
 	switch any(ret).(type) {
 	// insertion point for generic get gongstruct name
-	case Button:
-		res = "Button"
 	case Node:
 		res = "Node"
 	case Tree:
@@ -1053,12 +812,10 @@ func GetFields[Type Gongstruct]() (res []string) {
 
 	switch any(ret).(type) {
 	// insertion point for generic get gongstruct name
-	case Button:
-		res = []string{"Name"}
 	case Node:
-		res = []string{"Name", "IsExpanded", "HasCheckboxButton", "Children", "Button"}
+		res = []string{"Name", "IsExpanded", "HasCheckboxButton", "IsChecked", "Children"}
 	case Tree:
-		res = []string{"Name", "RootNode"}
+		res = []string{"Name", "RootNodes"}
 	}
 	return
 }
@@ -1068,12 +825,6 @@ func GetFieldStringValue[Type Gongstruct](instance Type, fieldName string) (res 
 
 	switch any(ret).(type) {
 	// insertion point for generic get gongstruct field value
-	case Button:
-		switch fieldName {
-		// string value of fields
-		case "Name":
-			res = any(instance).(Button).Name
-		}
 	case Node:
 		switch fieldName {
 		// string value of fields
@@ -1083,6 +834,8 @@ func GetFieldStringValue[Type Gongstruct](instance Type, fieldName string) (res 
 			res = fmt.Sprintf("%t", any(instance).(Node).IsExpanded)
 		case "HasCheckboxButton":
 			res = fmt.Sprintf("%t", any(instance).(Node).HasCheckboxButton)
+		case "IsChecked":
+			res = fmt.Sprintf("%t", any(instance).(Node).IsChecked)
 		case "Children":
 			for idx, __instance__ := range any(instance).(Node).Children {
 				if idx > 0 {
@@ -1090,19 +843,18 @@ func GetFieldStringValue[Type Gongstruct](instance Type, fieldName string) (res 
 				}
 				res += __instance__.Name
 			}
-		case "Button":
-			if any(instance).(Node).Button != nil {
-				res = any(instance).(Node).Button.Name
-			}
 		}
 	case Tree:
 		switch fieldName {
 		// string value of fields
 		case "Name":
 			res = any(instance).(Tree).Name
-		case "RootNode":
-			if any(instance).(Tree).RootNode != nil {
-				res = any(instance).(Tree).RootNode.Name
+		case "RootNodes":
+			for idx, __instance__ := range any(instance).(Tree).RootNodes {
+				if idx > 0 {
+					res += "\n"
+				}
+				res += __instance__.Name
 			}
 		}
 	}

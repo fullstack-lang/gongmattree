@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // insertion point for imports
-import { ButtonsTableComponent } from './buttons-table/buttons-table.component'
-import { ButtonDetailComponent } from './button-detail/button-detail.component'
-import { ButtonPresentationComponent } from './button-presentation/button-presentation.component'
-
 import { NodesTableComponent } from './nodes-table/nodes-table.component'
 import { NodeDetailComponent } from './node-detail/node-detail.component'
 import { NodePresentationComponent } from './node-presentation/node-presentation.component'
@@ -16,13 +12,6 @@ import { TreePresentationComponent } from './tree-presentation/tree-presentation
 
 
 const routes: Routes = [ // insertion point for routes declarations
-	{ path: 'github_com_fullstack_lang_gongmattree_go-buttons', component: ButtonsTableComponent, outlet: 'github_com_fullstack_lang_gongmattree_go_table' },
-	{ path: 'github_com_fullstack_lang_gongmattree_go-button-adder', component: ButtonDetailComponent, outlet: 'github_com_fullstack_lang_gongmattree_go_editor' },
-	{ path: 'github_com_fullstack_lang_gongmattree_go-button-adder/:id/:originStruct/:originStructFieldName', component: ButtonDetailComponent, outlet: 'github_com_fullstack_lang_gongmattree_go_editor' },
-	{ path: 'github_com_fullstack_lang_gongmattree_go-button-detail/:id', component: ButtonDetailComponent, outlet: 'github_com_fullstack_lang_gongmattree_go_editor' },
-	{ path: 'github_com_fullstack_lang_gongmattree_go-button-presentation/:id', component: ButtonPresentationComponent, outlet: 'github_com_fullstack_lang_gongmattree_go_presentation' },
-	{ path: 'github_com_fullstack_lang_gongmattree_go-button-presentation-special/:id', component: ButtonPresentationComponent, outlet: 'github_com_fullstack_lang_gongmattree_gobuttonpres' },
-
 	{ path: 'github_com_fullstack_lang_gongmattree_go-nodes', component: NodesTableComponent, outlet: 'github_com_fullstack_lang_gongmattree_go_table' },
 	{ path: 'github_com_fullstack_lang_gongmattree_go-node-adder', component: NodeDetailComponent, outlet: 'github_com_fullstack_lang_gongmattree_go_editor' },
 	{ path: 'github_com_fullstack_lang_gongmattree_go-node-adder/:id/:originStruct/:originStructFieldName', component: NodeDetailComponent, outlet: 'github_com_fullstack_lang_gongmattree_go_editor' },

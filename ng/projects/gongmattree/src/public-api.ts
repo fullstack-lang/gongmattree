@@ -15,13 +15,6 @@ export * from './lib/gongstruct-selection.service'
 export * from './lib/push_from_front_nb.service'
 
 
-export * from './lib/button-detail/button-detail.component'
-export * from './lib/button-presentation/button-presentation.component'
-export * from './lib/button-sorting/button-sorting.component'
-export * from './lib/buttons-table/buttons-table.component'
-export * from './lib/button-db'
-export * from './lib/button.service'
-
 export * from './lib/node-detail/node-detail.component'
 export * from './lib/node-presentation/node-presentation.component'
 export * from './lib/node-sorting/node-sorting.component'

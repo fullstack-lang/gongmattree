@@ -27,6 +27,9 @@
     <!-- -->
     <mat-checkbox [formControl]="HasCheckboxButtonFormControl">HasCheckboxButton</mat-checkbox>
 
+    <!-- -->
+    <mat-checkbox [formControl]="IsCheckedFormControl">IsChecked</mat-checkbox>
+
     <mat-grid-list cols="5" rowHeight="2:1">
         <mat-grid-tile [colspan]="3">
             <button mat-raised-button (click)="openReverseSelection('Node', 'Node_ChildrenDBID', 'ONE_MANY_ASSOCIATION_MODE', '', '', '')">Children</button>
@@ -41,21 +44,20 @@
         </mat-grid-tile>
     </mat-grid-list>
     <mat-form-field class="detail-full-width">
-        <mat-label>Button</mat-label>
-        <mat-select [compareWith]="compareObjects" [(value)]="node.Button" (selectionChange)="fillUpNameIfEmpty($event)">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let button of frontRepo.Buttons_array" [value]="button">
-                {{button.Name}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="detail-full-width">
         <mat-label>(Node) Children</mat-label>
         <mat-select [compareWith]="compareObjects" [(ngModel)]="node.Node_Children_reverse" [ngModelOptions]="{standalone: true}">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let node of frontRepo.Nodes_array" [value]="node">
                 {{node.Name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="detail-full-width">
+        <mat-label>(Tree) RootNodes</mat-label>
+        <mat-select [compareWith]="compareObjects" [(ngModel)]="node.Tree_RootNodes_reverse" [ngModelOptions]="{standalone: true}">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let tree of frontRepo.Trees_array" [value]="tree">
+                {{tree.Name}}
             </mat-option>
         </mat-select>
     </mat-form-field>

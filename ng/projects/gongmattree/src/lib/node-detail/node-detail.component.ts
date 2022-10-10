@@ -10,6 +10,7 @@ import { MapOfComponents } from '../map-components'
 import { MapOfSortingComponents } from '../map-components'
 
 // insertion point for imports
+import { TreeDB } from '../tree-db'
 
 import { Router, RouterState, ActivatedRoute } from '@angular/router';
 
@@ -24,6 +25,7 @@ enum NodeDetailComponentState {
 	UPDATE_INSTANCE,
 	// insertion point for declarations of enum values of state
 	CREATE_INSTANCE_WITH_ASSOCIATION_Node_Children_SET,
+	CREATE_INSTANCE_WITH_ASSOCIATION_Tree_RootNodes_SET,
 }
 
 @Component({
@@ -36,6 +38,7 @@ export class NodeDetailComponent implements OnInit {
 	// insertion point for declarations
 	IsExpandedFormControl: UntypedFormControl = new UntypedFormControl(false);
 	HasCheckboxButtonFormControl: UntypedFormControl = new UntypedFormControl(false);
+	IsCheckedFormControl: UntypedFormControl = new UntypedFormControl(false);
 
 	// the NodeDB of interest
 	node: NodeDB = new NodeDB
@@ -88,6 +91,10 @@ export class NodeDetailComponent implements OnInit {
 						// console.log("Node" + " is instanciated with back pointer to instance " + this.id + " Node association Children")
 						this.state = NodeDetailComponentState.CREATE_INSTANCE_WITH_ASSOCIATION_Node_Children_SET
 						break;
+					case "RootNodes":
+						// console.log("Node" + " is instanciated with back pointer to instance " + this.id + " Tree association RootNodes")
+						this.state = NodeDetailComponentState.CREATE_INSTANCE_WITH_ASSOCIATION_Tree_RootNodes_SET
+						break;
 					default:
 						console.log(this.originStructFieldName + " is unkown association")
 				}
@@ -128,6 +135,10 @@ export class NodeDetailComponent implements OnInit {
 						this.node = new (NodeDB)
 						this.node.Node_Children_reverse = frontRepo.Nodes.get(this.id)!
 						break;
+					case NodeDetailComponentState.CREATE_INSTANCE_WITH_ASSOCIATION_Tree_RootNodes_SET:
+						this.node = new (NodeDB)
+						this.node.Tree_RootNodes_reverse = frontRepo.Trees.get(this.id)!
+						break;
 					default:
 						console.log(this.state + " is unkown state")
 				}
@@ -135,6 +146,7 @@ export class NodeDetailComponent implements OnInit {
 				// insertion point for recovery of form controls value for bool fields
 				this.IsExpandedFormControl.setValue(this.node.IsExpanded)
 				this.HasCheckboxButtonFormControl.setValue(this.node.HasCheckboxButton)
+				this.IsCheckedFormControl.setValue(this.node.IsChecked)
 			}
 		)
 
@@ -149,16 +161,7 @@ export class NodeDetailComponent implements OnInit {
 		// insertion point for translation/nullation of each field
 		this.node.IsExpanded = this.IsExpandedFormControl.value
 		this.node.HasCheckboxButton = this.HasCheckboxButtonFormControl.value
-		if (this.node.ButtonID == undefined) {
-			this.node.ButtonID = new NullInt64
-		}
-		if (this.node.Button != undefined) {
-			this.node.ButtonID.Int64 = this.node.Button.ID
-			this.node.ButtonID.Valid = true
-		} else {
-			this.node.ButtonID.Int64 = 0
-			this.node.ButtonID.Valid = true
-		}
+		this.node.IsChecked = this.IsCheckedFormControl.value
 
 		// save from the front pointer space to the non pointer space for serialization
 
@@ -174,6 +177,18 @@ export class NodeDetailComponent implements OnInit {
 			}
 			this.node.Node_ChildrenDBID_Index.Valid = true
 			this.node.Node_Children_reverse = new NodeDB // very important, otherwise, circular JSON
+		}
+		if (this.node.Tree_RootNodes_reverse != undefined) {
+			if (this.node.Tree_RootNodesDBID == undefined) {
+				this.node.Tree_RootNodesDBID = new NullInt64
+			}
+			this.node.Tree_RootNodesDBID.Int64 = this.node.Tree_RootNodes_reverse.ID
+			this.node.Tree_RootNodesDBID.Valid = true
+			if (this.node.Tree_RootNodesDBID_Index == undefined) {
+				this.node.Tree_RootNodesDBID_Index = new NullInt64
+			}
+			this.node.Tree_RootNodesDBID_Index.Valid = true
+			this.node.Tree_RootNodes_reverse = new TreeDB // very important, otherwise, circular JSON
 		}
 
 		switch (this.state) {

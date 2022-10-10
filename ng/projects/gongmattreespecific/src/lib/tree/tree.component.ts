@@ -128,13 +128,9 @@ export class TreeComponent implements OnInit {
         }
         var treeSingloton = this.gongmattreeFrontRepo.Trees_array[0]
 
-        if (treeSingloton.RootNode == undefined) {
-          console.log("error: there should be a root node")
-          return
+        for (var rootNode of treeSingloton.RootNodes!) {
+          this.dataSource.data.concat(this.gongNodeToMatTreeNode(rootNode))
         }
-        var rootNode = treeSingloton.RootNode
-
-        this.dataSource.data = [this.gongNodeToMatTreeNode(rootNode)]
 
         // expand nodes that were exapanded before
         this.treeControl.dataNodes?.forEach(
@@ -162,6 +158,18 @@ export class TreeComponent implements OnInit {
     console.log(node.name)
 
     node.gongNode.IsExpanded = !node.gongNode.IsExpanded
+
+    this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
+      gongmattreeNode => {
+        console.log("updated node")
+      }
+    )
+  }
+
+  toggleNodeCheckbox(node: FlatNode): void {
+    console.log(node.name)
+
+    node.gongNode.IsChecked = !node.gongNode.IsChecked
 
     this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
       gongmattreeNode => {

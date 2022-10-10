@@ -77,12 +77,19 @@ export class NodesTableComponent implements OnInit {
         case 'HasCheckboxButton':
           return nodeDB.HasCheckboxButton?"true":"false";
 
-        case 'Button':
-          return (nodeDB.Button ? nodeDB.Button.Name : '');
+        case 'IsChecked':
+          return nodeDB.IsChecked?"true":"false";
 
         case 'Node_Children':
           if (this.frontRepo.Nodes.get(nodeDB.Node_ChildrenDBID.Int64) != undefined) {
             return this.frontRepo.Nodes.get(nodeDB.Node_ChildrenDBID.Int64)!.Name
+          } else {
+            return ""
+          }
+
+        case 'Tree_RootNodes':
+          if (this.frontRepo.Trees.get(nodeDB.Tree_RootNodesDBID.Int64) != undefined) {
+            return this.frontRepo.Trees.get(nodeDB.Tree_RootNodesDBID.Int64)!.Name
           } else {
             return ""
           }
@@ -102,11 +109,12 @@ export class NodesTableComponent implements OnInit {
 
       // insertion point for merging of fields
       mergedContent += nodeDB.Name.toLowerCase()
-      if (nodeDB.Button) {
-        mergedContent += nodeDB.Button.Name.toLowerCase()
-      }
       if (nodeDB.Node_ChildrenDBID.Int64 != 0) {
         mergedContent += this.frontRepo.Nodes.get(nodeDB.Node_ChildrenDBID.Int64)!.Name.toLowerCase()
+      }
+
+      if (nodeDB.Tree_RootNodesDBID.Int64 != 0) {
+        mergedContent += this.frontRepo.Trees.get(nodeDB.Tree_RootNodesDBID.Int64)!.Name.toLowerCase()
       }
 
 
@@ -162,16 +170,18 @@ export class NodesTableComponent implements OnInit {
         "Name",
         "IsExpanded",
         "HasCheckboxButton",
-        "Button",
+        "IsChecked",
         "Node_Children",
+        "Tree_RootNodes",
       ]
     } else {
       this.displayedColumns = ['select', 'ID', // insertion point for columns to display
         "Name",
         "IsExpanded",
         "HasCheckboxButton",
-        "Button",
+        "IsChecked",
         "Node_Children",
+        "Tree_RootNodes",
       ]
       this.selection = new SelectionModel<NodeDB>(allowMultiSelect, this.initialSelection);
     }

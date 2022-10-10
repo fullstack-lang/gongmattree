@@ -39,11 +39,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { GongstructSelectionService } from './gongstruct-selection.service'
 
 // insertion point for imports 
-import { ButtonsTableComponent } from './buttons-table/buttons-table.component'
-import { ButtonSortingComponent } from './button-sorting/button-sorting.component'
-import { ButtonDetailComponent } from './button-detail/button-detail.component'
-import { ButtonPresentationComponent } from './button-presentation/button-presentation.component'
-
 import { NodesTableComponent } from './nodes-table/nodes-table.component'
 import { NodeSortingComponent } from './node-sorting/node-sorting.component'
 import { NodeDetailComponent } from './node-detail/node-detail.component'
@@ -58,11 +53,6 @@ import { TreePresentationComponent } from './tree-presentation/tree-presentation
 @NgModule({
 	declarations: [
 		// insertion point for declarations 
-		ButtonsTableComponent,
-		ButtonSortingComponent,
-		ButtonDetailComponent,
-		ButtonPresentationComponent,
-
 		NodesTableComponent,
 		NodeSortingComponent,
 		NodeDetailComponent,
@@ -112,11 +102,6 @@ import { TreePresentationComponent } from './tree-presentation/tree-presentation
 	],
 	exports: [
 		// insertion point for declarations 
-		ButtonsTableComponent,
-		ButtonSortingComponent,
-		ButtonDetailComponent,
-		ButtonPresentationComponent,
-
 		NodesTableComponent,
 		NodeSortingComponent,
 		NodeDetailComponent,

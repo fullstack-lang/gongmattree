@@ -4,9 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 
 // insertion point sub template for services imports 
-import { ButtonDB } from './button-db'
-import { ButtonService } from './button.service'
-
 import { NodeDB } from './node-db'
 import { NodeService } from './node.service'
 
@@ -16,9 +13,6 @@ import { TreeService } from './tree.service'
 
 // FrontRepo stores all instances in a front repository (design pattern repository)
 export class FrontRepo { // insertion point sub template 
-  Buttons_array = new Array<ButtonDB>(); // array of repo instances
-  Buttons = new Map<number, ButtonDB>(); // map of repo instances
-  Buttons_batch = new Map<number, ButtonDB>(); // same but only in last GET (for finding repo instances to delete)
   Nodes_array = new Array<NodeDB>(); // array of repo instances
   Nodes = new Map<number, NodeDB>(); // map of repo instances
   Nodes_batch = new Map<number, NodeDB>(); // same but only in last GET (for finding repo instances to delete)
@@ -83,7 +77,6 @@ export class FrontRepoService {
 
   constructor(
     private http: HttpClient, // insertion point sub template 
-    private buttonService: ButtonService,
     private nodeService: NodeService,
     private treeService: TreeService,
   ) { }
@@ -116,11 +109,9 @@ export class FrontRepoService {
 
   // typing of observable can be messy in typescript. Therefore, one force the type
   observableFrontRepo: [ // insertion point sub template 
-    Observable<ButtonDB[]>,
     Observable<NodeDB[]>,
     Observable<TreeDB[]>,
   ] = [ // insertion point sub template 
-      this.buttonService.getButtons(),
       this.nodeService.getNodes(),
       this.treeService.getTrees(),
     ];
@@ -138,14 +129,11 @@ export class FrontRepoService {
           this.observableFrontRepo
         ).subscribe(
           ([ // insertion point sub template for declarations 
-            buttons_,
             nodes_,
             trees_,
           ]) => {
             // Typing can be messy with many items. Therefore, type casting is necessary here
             // insertion point sub template for type casting 
-            var buttons: ButtonDB[]
-            buttons = buttons_ as ButtonDB[]
             var nodes: NodeDB[]
             nodes = nodes_ as NodeDB[]
             var trees: TreeDB[]
@@ -154,39 +142,6 @@ export class FrontRepoService {
             // 
             // First Step: init map of instances
             // insertion point sub template for init 
-            // init the array
-            FrontRepoSingloton.Buttons_array = buttons
-
-            // clear the map that counts Button in the GET
-            FrontRepoSingloton.Buttons_batch.clear()
-
-            buttons.forEach(
-              button => {
-                FrontRepoSingloton.Buttons.set(button.ID, button)
-                FrontRepoSingloton.Buttons_batch.set(button.ID, button)
-              }
-            )
-
-            // clear buttons that are absent from the batch
-            FrontRepoSingloton.Buttons.forEach(
-              button => {
-                if (FrontRepoSingloton.Buttons_batch.get(button.ID) == undefined) {
-                  FrontRepoSingloton.Buttons.delete(button.ID)
-                }
-              }
-            )
-
-            // sort Buttons_array array
-            FrontRepoSingloton.Buttons_array.sort((t1, t2) => {
-              if (t1.Name > t2.Name) {
-                return 1;
-              }
-              if (t1.Name < t2.Name) {
-                return -1;
-              }
-              return 0;
-            });
-
             // init the array
             FrontRepoSingloton.Nodes_array = nodes
 
@@ -257,23 +212,9 @@ export class FrontRepoService {
             // 
             // Second Step: redeem pointers between instances (thanks to maps in the First Step)
             // insertion point sub template for redeem 
-            buttons.forEach(
-              button => {
-                // insertion point sub sub template for ONE-/ZERO-ONE associations pointers redeeming
-
-                // insertion point for redeeming ONE-MANY associations
-              }
-            )
             nodes.forEach(
               node => {
                 // insertion point sub sub template for ONE-/ZERO-ONE associations pointers redeeming
-                // insertion point for pointer field Button redeeming
-                {
-                  let _button = FrontRepoSingloton.Buttons.get(node.ButtonID.Int64)
-                  if (_button) {
-                    node.Button = _button
-                  }
-                }
 
                 // insertion point for redeeming ONE-MANY associations
                 // insertion point for slice of pointer field Node.Children redeeming
@@ -289,18 +230,24 @@ export class FrontRepoService {
                     }
                   }
                 }
+                // insertion point for slice of pointer field Tree.RootNodes redeeming
+                {
+                  let _tree = FrontRepoSingloton.Trees.get(node.Tree_RootNodesDBID.Int64)
+                  if (_tree) {
+                    if (_tree.RootNodes == undefined) {
+                      _tree.RootNodes = new Array<NodeDB>()
+                    }
+                    _tree.RootNodes.push(node)
+                    if (node.Tree_RootNodes_reverse == undefined) {
+                      node.Tree_RootNodes_reverse = _tree
+                    }
+                  }
+                }
               }
             )
             trees.forEach(
               tree => {
                 // insertion point sub sub template for ONE-/ZERO-ONE associations pointers redeeming
-                // insertion point for pointer field RootNode redeeming
-                {
-                  let _node = FrontRepoSingloton.Nodes.get(tree.RootNodeID.Int64)
-                  if (_node) {
-                    tree.RootNode = _node
-                  }
-                }
 
                 // insertion point for redeeming ONE-MANY associations
               }
@@ -315,57 +262,6 @@ export class FrontRepoService {
   }
 
   // insertion point for pull per struct 
-
-  // ButtonPull performs a GET on Button of the stack and redeem association pointers 
-  ButtonPull(): Observable<FrontRepo> {
-    return new Observable<FrontRepo>(
-      (observer) => {
-        combineLatest([
-          this.buttonService.getButtons()
-        ]).subscribe(
-          ([ // insertion point sub template 
-            buttons,
-          ]) => {
-            // init the array
-            FrontRepoSingloton.Buttons_array = buttons
-
-            // clear the map that counts Button in the GET
-            FrontRepoSingloton.Buttons_batch.clear()
-
-            // 
-            // First Step: init map of instances
-            // insertion point sub template 
-            buttons.forEach(
-              button => {
-                FrontRepoSingloton.Buttons.set(button.ID, button)
-                FrontRepoSingloton.Buttons_batch.set(button.ID, button)
-
-                // insertion point for redeeming ONE/ZERO-ONE associations
-
-                // insertion point for redeeming ONE-MANY associations
-              }
-            )
-
-            // clear buttons that are absent from the GET
-            FrontRepoSingloton.Buttons.forEach(
-              button => {
-                if (FrontRepoSingloton.Buttons_batch.get(button.ID) == undefined) {
-                  FrontRepoSingloton.Buttons.delete(button.ID)
-                }
-              }
-            )
-
-            // 
-            // Second Step: redeem pointers between instances (thanks to maps in the First Step)
-            // insertion point sub template 
-
-            // hand over control flow to observer
-            observer.next(FrontRepoSingloton)
-          }
-        )
-      }
-    )
-  }
 
   // NodePull performs a GET on Node of the stack and redeem association pointers 
   NodePull(): Observable<FrontRepo> {
@@ -392,13 +288,6 @@ export class FrontRepoService {
                 FrontRepoSingloton.Nodes_batch.set(node.ID, node)
 
                 // insertion point for redeeming ONE/ZERO-ONE associations
-                // insertion point for pointer field Button redeeming
-                {
-                  let _button = FrontRepoSingloton.Buttons.get(node.ButtonID.Int64)
-                  if (_button) {
-                    node.Button = _button
-                  }
-                }
 
                 // insertion point for redeeming ONE-MANY associations
                 // insertion point for slice of pointer field Node.Children redeeming
@@ -411,6 +300,19 @@ export class FrontRepoService {
                     _node.Children.push(node)
                     if (node.Node_Children_reverse == undefined) {
                       node.Node_Children_reverse = _node
+                    }
+                  }
+                }
+                // insertion point for slice of pointer field Tree.RootNodes redeeming
+                {
+                  let _tree = FrontRepoSingloton.Trees.get(node.Tree_RootNodesDBID.Int64)
+                  if (_tree) {
+                    if (_tree.RootNodes == undefined) {
+                      _tree.RootNodes = new Array<NodeDB>()
+                    }
+                    _tree.RootNodes.push(node)
+                    if (node.Tree_RootNodes_reverse == undefined) {
+                      node.Tree_RootNodes_reverse = _tree
                     }
                   }
                 }
@@ -463,13 +365,6 @@ export class FrontRepoService {
                 FrontRepoSingloton.Trees_batch.set(tree.ID, tree)
 
                 // insertion point for redeeming ONE/ZERO-ONE associations
-                // insertion point for pointer field RootNode redeeming
-                {
-                  let _node = FrontRepoSingloton.Nodes.get(tree.RootNodeID.Int64)
-                  if (_node) {
-                    tree.RootNode = _node
-                  }
-                }
 
                 // insertion point for redeeming ONE-MANY associations
               }
@@ -498,12 +393,9 @@ export class FrontRepoService {
 }
 
 // insertion point for get unique ID per struct 
-export function getButtonUniqueID(id: number): number {
+export function getNodeUniqueID(id: number): number {
   return 31 * id
 }
-export function getNodeUniqueID(id: number): number {
-  return 37 * id
-}
 export function getTreeUniqueID(id: number): number {
-  return 41 * id
+  return 37 * id
 }

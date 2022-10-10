@@ -1,9 +1,13 @@
 package models
 
 type Node struct {
-	Name              string
-	IsExpanded        bool
+	Name string
+
+	IsExpanded bool
+
+	// fields related to the selection of the node by a check box
 	HasCheckboxButton bool
-	Children          []*Node
-	Button            *Button
+	IsChecked         bool
+
+	Children []*Node
 }

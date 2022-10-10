@@ -134,16 +134,6 @@ export class TreeDetailComponent implements OnInit {
 		// pointers fields, after the translation, are nulled in order to perform serialization
 
 		// insertion point for translation/nullation of each field
-		if (this.tree.RootNodeID == undefined) {
-			this.tree.RootNodeID = new NullInt64
-		}
-		if (this.tree.RootNode != undefined) {
-			this.tree.RootNodeID.Int64 = this.tree.RootNode.ID
-			this.tree.RootNodeID.Valid = true
-		} else {
-			this.tree.RootNodeID.Int64 = 0
-			this.tree.RootNodeID.Valid = true
-		}
 
 		// save from the front pointer space to the non pointer space for serialization
 

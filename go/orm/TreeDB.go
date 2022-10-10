@@ -45,10 +45,6 @@ type TreeAPI struct {
 // reverse pointers of slice of poitners to Struct
 type TreePointersEnconding struct {
 	// insertion for pointer fields encoding declaration
-
-	// field RootNode is a pointer to another Struct (optional or 0..1)
-	// This field is generated into another field to enable AS ONE association
-	RootNodeID sql.NullInt64
 }
 
 // TreeDB describes a tree in the database
@@ -236,12 +232,22 @@ func (backRepoTree *BackRepoTreeStruct) CommitPhaseTwoInstance(backRepo *BackRep
 		treeDB.CopyBasicFieldsFromTree(tree)
 
 		// insertion point for translating pointers encodings into actual pointers
-		// commit pointer value tree.RootNode translates to updating the tree.RootNodeID
-		treeDB.RootNodeID.Valid = true // allow for a 0 value (nil association)
-		if tree.RootNode != nil {
-			if RootNodeId, ok := (*backRepo.BackRepoNode.Map_NodePtr_NodeDBID)[tree.RootNode]; ok {
-				treeDB.RootNodeID.Int64 = int64(RootNodeId)
-				treeDB.RootNodeID.Valid = true
+		// This loop encodes the slice of pointers tree.RootNodes into the back repo.
+		// Each back repo instance at the end of the association encode the ID of the association start
+		// into a dedicated field for coding the association. The back repo instance is then saved to the db
+		for idx, nodeAssocEnd := range tree.RootNodes {
+
+			// get the back repo instance at the association end
+			nodeAssocEnd_DB :=
+				backRepo.BackRepoNode.GetNodeDBFromNodePtr(nodeAssocEnd)
+
+			// encode reverse pointer in the association end back repo instance
+			nodeAssocEnd_DB.Tree_RootNodesDBID.Int64 = int64(treeDB.ID)
+			nodeAssocEnd_DB.Tree_RootNodesDBID.Valid = true
+			nodeAssocEnd_DB.Tree_RootNodesDBID_Index.Int64 = int64(idx)
+			nodeAssocEnd_DB.Tree_RootNodesDBID_Index.Valid = true
+			if q := backRepoTree.db.Save(nodeAssocEnd_DB); q.Error != nil {
+				return q.Error
 			}
 		}
 
@@ -350,10 +356,33 @@ func (backRepoTree *BackRepoTreeStruct) CheckoutPhaseTwoInstance(backRepo *BackR
 	_ = tree // sometimes, there is no code generated. This lines voids the "unused variable" compilation error
 
 	// insertion point for checkout of pointer encoding
-	// RootNode field
-	if treeDB.RootNodeID.Int64 != 0 {
-		tree.RootNode = (*backRepo.BackRepoNode.Map_NodeDBID_NodePtr)[uint(treeDB.RootNodeID.Int64)]
+	// This loop redeem tree.RootNodes in the stage from the encode in the back repo
+	// It parses all NodeDB in the back repo and if the reverse pointer encoding matches the back repo ID
+	// it appends the stage instance
+	// 1. reset the slice
+	tree.RootNodes = tree.RootNodes[:0]
+	// 2. loop all instances in the type in the association end
+	for _, nodeDB_AssocEnd := range *backRepo.BackRepoNode.Map_NodeDBID_NodeDB {
+		// 3. Does the ID encoding at the end and the ID at the start matches ?
+		if nodeDB_AssocEnd.Tree_RootNodesDBID.Int64 == int64(treeDB.ID) {
+			// 4. fetch the associated instance in the stage
+			node_AssocEnd := (*backRepo.BackRepoNode.Map_NodeDBID_NodePtr)[nodeDB_AssocEnd.ID]
+			// 5. append it the association slice
+			tree.RootNodes = append(tree.RootNodes, node_AssocEnd)
+		}
 	}
+
+	// sort the array according to the order
+	sort.Slice(tree.RootNodes, func(i, j int) bool {
+		nodeDB_i_ID := (*backRepo.BackRepoNode.Map_NodePtr_NodeDBID)[tree.RootNodes[i]]
+		nodeDB_j_ID := (*backRepo.BackRepoNode.Map_NodePtr_NodeDBID)[tree.RootNodes[j]]
+
+		nodeDB_i := (*backRepo.BackRepoNode.Map_NodeDBID_NodeDB)[nodeDB_i_ID]
+		nodeDB_j := (*backRepo.BackRepoNode.Map_NodeDBID_NodeDB)[nodeDB_j_ID]
+
+		return nodeDB_i.Tree_RootNodesDBID_Index.Int64 < nodeDB_j.Tree_RootNodesDBID_Index.Int64
+	})
+
 	return
 }
 
@@ -567,12 +596,6 @@ func (backRepoTree *BackRepoTreeStruct) RestorePhaseTwo() {
 		_ = treeDB
 
 		// insertion point for reindexing pointers encoding
-		// reindexing RootNode field
-		if treeDB.RootNodeID.Int64 != 0 {
-			treeDB.RootNodeID.Int64 = int64(BackRepoNodeid_atBckpTime_newID[uint(treeDB.RootNodeID.Int64)])
-			treeDB.RootNodeID.Valid = true
-		}
-
 		// update databse with new index encoding
 		query := backRepoTree.db.Model(treeDB).Updates(*treeDB)
 		if query.Error != nil {

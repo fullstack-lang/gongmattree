@@ -7,8 +7,7 @@
 
         <!-- use a disabled button to provide padding for tree leaf -->
         <button mat-icon-button disabled></button>
-        <mat-checkbox *ngIf="node.gongNode.HasCheckboxButton" class="checklist-leaf-node">
-            {{node.name}}
+        <mat-checkbox *ngIf="node.gongNode.HasCheckboxButton" [checked]="node.gongNode.IsChecked" (change)="toggleNodeCheckbox(node)"> > {{node.name}}
         </mat-checkbox>
         <div *ngIf="!node.gongNode.HasCheckboxButton">
             {{node.name}}
@@ -22,7 +21,7 @@
                 'expand_more' : 'chevron_right'}}
             </mat-icon>
         </button>
-        <mat-checkbox *ngIf="node.gongNode.HasCheckboxButton" class="checklist-leaf-node">
+        <mat-checkbox *ngIf="node.gongNode.HasCheckboxButton" [checked]="node.gongNode.IsChecked" (change)="toggleNodeCheckbox(node)">
             {{node.name}}
         </mat-checkbox>
         <div *ngIf="!node.gongNode.HasCheckboxButton">

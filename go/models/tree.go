@@ -1,6 +1,6 @@
 package models
 
 type Tree struct {
-	Name     string
-	RootNode *Node
+	Name      string
+	RootNodes []*Node
 }
