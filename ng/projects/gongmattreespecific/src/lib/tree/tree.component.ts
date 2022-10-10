@@ -128,9 +128,12 @@ export class TreeComponent implements OnInit {
         }
         var treeSingloton = this.gongmattreeFrontRepo.Trees_array[0]
 
-        for (var rootNode of treeSingloton.RootNodes!) {
-          this.dataSource.data.concat(this.gongNodeToMatTreeNode(rootNode))
-        }
+        var rootNodes = new Array<Node>()
+        treeSingloton.RootNodes!.forEach(root => {
+          rootNodes.push(this.gongNodeToMatTreeNode(root))
+        })
+
+        this.dataSource.data = rootNodes
 
         // expand nodes that were exapanded before
         this.treeControl.dataNodes?.forEach(
