@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -32,6 +32,8 @@ interface FlatNode {
   styleUrls: ['./tree.component.css']
 })
 export class TreeComponent implements OnInit {
+
+  @Input() treeName: string = ""
 
   private _transformer = (node: Node, level: number) => {
     return {
@@ -122,13 +124,21 @@ export class TreeComponent implements OnInit {
         this.gongmattreeFrontRepo = gongmattreesFrontRepo
 
 
-        if (this.gongmattreeFrontRepo.Trees_array.length != 1) {
-          console.log("error: there should be exactly one tree")
+        var treeSingloton : gongmattree.TreeDB = new(gongmattree.TreeDB)
+        var selected: boolean = false
+        for (var tree of this.gongmattreeFrontRepo.Trees_array) {
+          if (tree.Name == this.treeName) {
+            treeSingloton = tree
+            selected = true
+          }
+        }
+        if (!selected) {
+          console.log("no tree matching name " + this.treeName)
           return
         }
-        var treeSingloton = this.gongmattreeFrontRepo.Trees_array[0]
 
         if (treeSingloton.RootNodes == undefined) {
+          console.log("no nodes on tree " + this.treeName)
           return
         }
 
