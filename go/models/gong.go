@@ -2,6 +2,7 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -10,6 +11,9 @@ import (
 	"sort"
 	"strings"
 )
+
+// errUnkownEnum is returns when a value cannot match enum values
+var errUnkownEnum = errors.New("unkown enum")
 
 // swagger:ignore
 type __void any

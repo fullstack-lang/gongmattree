@@ -128,6 +128,10 @@ export class TreeComponent implements OnInit {
         }
         var treeSingloton = this.gongmattreeFrontRepo.Trees_array[0]
 
+        if (treeSingloton.RootNodes == undefined) {
+          return
+        }
+
         var rootNodes = new Array<Node>()
         treeSingloton.RootNodes!.forEach(root => {
           rootNodes.push(this.gongNodeToMatTreeNode(root))
