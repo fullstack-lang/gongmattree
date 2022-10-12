@@ -203,6 +203,9 @@ func main() {
 	gongdoc_models.Stage.Commit()
 	gong_models.Stage.Commit()
 
+	// intercept updates to the nodes
+	// hook something on models.Stage.OnInitCommitFromFrontCallback
+
 	// insertion point for serving the static file
 	// provide the static route for the angular pages
 	r.Use(static.Serve("/", EmbedFolder(gongmattree.NgDistNg, "ng/dist/ng")))
