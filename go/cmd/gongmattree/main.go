@@ -215,8 +215,19 @@ func main() {
 		c.Abort()
 	})
 
+	// get callbacks on node updates
+	var onNodeUpdateCallbackStruct OnNodeUpdateCallbackStruct
+	models.Stage.OnAfterNodeUpdateCallback = onNodeUpdateCallbackStruct
+
 	log.Printf("Server ready serve on localhost:8080")
 	r.Run()
+}
+
+type OnNodeUpdateCallbackStruct struct {
+}
+
+func (onNodeUpdateCallbackStruct *OnNodeUpdateCallbackStruct) OnAfterUpdate(stage *models.StageStruct,
+	node *models.Node) {
 }
 
 type embedFileSystem struct {
