@@ -216,20 +216,41 @@ func main() {
 	})
 
 	// get callbacks on node updates
-	var onNodeUpdateCallbackStruct OnNodeUpdateCallbackStruct
-	models.Stage.OnAfterNodeUpdateCallback = onNodeUpdateCallbackStruct
+	var onNodeCallbackStruct NodeCallbackStruct
+	models.Stage.OnAfterNodeUpdateCallback = onNodeCallbackStruct
+	models.Stage.OnAfterNodeCreateCallback = onNodeCallbackStruct
+	models.Stage.OnAfterNodeDeleteCallback = onNodeCallbackStruct
+	models.Stage.OnAfterNodeReadCallback = onNodeCallbackStruct
 
 	log.Printf("Server ready serve on localhost:8080")
 	r.Run()
 }
 
-type OnNodeUpdateCallbackStruct struct {
+type NodeCallbackStruct struct {
 }
 
-func (onNodeUpdateCallbackStruct OnNodeUpdateCallbackStruct) OnAfterUpdate(
+func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterUpdate(
 	stage *models.StageStruct,
 	node *models.Node) {
 	log.Println("Node updated " + node.Name)
+}
+
+func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterCreate(
+	stage *models.StageStruct,
+	node *models.Node) {
+	log.Println("Node created " + node.Name)
+}
+
+func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterDelete(
+	stage *models.StageStruct,
+	node *models.Node) {
+	log.Println("Node delete " + node.Name)
+}
+
+func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterRead(
+	stage *models.StageStruct,
+	node *models.Node) {
+	log.Println("Node read " + node.Name)
 }
 
 type embedFileSystem struct {

@@ -125,6 +125,15 @@ func PostTree(c *gin.Context) {
 		return
 	}
 
+	// get an instance (not staged) from DB instance, and call callback function
+	tree := new(models.Tree)
+	treeDB.CopyBasicFieldsFromTree(tree)
+
+	if tree != nil {
+		models.AfterCreateFromFront(&models.Stage, tree)
+	}
+
+
 	// a POST is equivalent to a back repo commit increase
 	// (this will be improved with implementation of unit of work design pattern)
 	orm.BackRepo.IncrementPushFromFrontNb()
@@ -253,6 +262,12 @@ func DeleteTree(c *gin.Context) {
 
 	// with gorm.Model field, default delete is a soft delete. Unscoped() force delete
 	db.Unscoped().Delete(&treeDB)
+
+	// get stage instance from DB instance, and call callback function
+	tree := (*orm.BackRepo.BackRepoTree.Map_TreeDBID_TreePtr)[treeDB.ID]
+	if tree != nil {
+		models.AfterDeleteFromFront(&models.Stage, tree)
+	}
 
 	// a DELETE generates a back repo commit increase
 	// (this will be improved with implementation of unit of work design pattern)

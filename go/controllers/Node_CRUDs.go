@@ -86,14 +86,15 @@ func GetNodes(c *gin.Context) {
 // swagger:route POST /nodes nodes postNode
 //
 // Creates a node
-//     Consumes:
-//     - application/json
 //
-//     Produces:
-//     - application/json
+//	Consumes:
+//	- application/json
 //
-//     Responses:
-//       200: nodeDBResponse
+//	Produces:
+//	- application/json
+//
+//	Responses:
+//	  200: nodeDBResponse
 func PostNode(c *gin.Context) {
 	db := orm.BackRepo.BackRepoNode.GetDB()
 
@@ -123,6 +124,14 @@ func PostNode(c *gin.Context) {
 		log.Println(query.Error.Error())
 		c.JSON(http.StatusBadRequest, returnError.Body)
 		return
+	}
+
+	// get an instance (not staged) from DB instance, and call callback function
+	node := new(models.Node)
+	nodeDB.CopyBasicFieldsFromNode(node)
+
+	if node != nil {
+		models.AfterCreateFromFront(&models.Stage, node)
 	}
 
 	// a POST is equivalent to a back repo commit increase
@@ -161,6 +170,12 @@ func GetNode(c *gin.Context) {
 	nodeAPI.NodePointersEnconding = nodeDB.NodePointersEnconding
 	nodeDB.CopyBasicFieldsToNode(&nodeAPI.Node)
 
+	// get stage instance from DB instance, and call callback function
+	node := (*orm.BackRepo.BackRepoNode.Map_NodeDBID_NodePtr)[nodeDB.ID]
+	if node != nil {
+		models.AfterReadFromFront(&models.Stage, node)
+	}
+
 	c.JSON(http.StatusOK, nodeAPI)
 }
 
@@ -168,7 +183,7 @@ func GetNode(c *gin.Context) {
 //
 // swagger:route PATCH /nodes/{ID} nodes updateNode
 //
-// Update a node
+// # Update a node
 //
 // Responses:
 // default: genericError
@@ -232,7 +247,7 @@ func UpdateNode(c *gin.Context) {
 //
 // swagger:route DELETE /nodes/{ID} nodes deleteNode
 //
-// Delete a node
+// # Delete a node
 //
 // default: genericError
 //
@@ -253,6 +268,12 @@ func DeleteNode(c *gin.Context) {
 
 	// with gorm.Model field, default delete is a soft delete. Unscoped() force delete
 	db.Unscoped().Delete(&nodeDB)
+
+	// get stage instance from DB instance, and call callback function
+	node := (*orm.BackRepo.BackRepoNode.Map_NodeDBID_NodePtr)[nodeDB.ID]
+	if node != nil {
+		models.AfterDeleteFromFront(&models.Stage, node)
+	}
 
 	// a DELETE generates a back repo commit increase
 	// (this will be improved with implementation of unit of work design pattern)

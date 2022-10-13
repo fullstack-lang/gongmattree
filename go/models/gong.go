@@ -34,14 +34,20 @@ type GongStructInterface interface {
 type StageStruct struct { // insertion point for definition of arrays registering instances
 	Nodes           map[*Node]any
 	Nodes_mapString map[string]*Node
-	
+
+	OnAfterNodeCreateCallback OnAfterCreateInterface[Node]
 	OnAfterNodeUpdateCallback OnAfterUpdateInterface[Node]
+	OnAfterNodeDeleteCallback OnAfterDeleteInterface[Node]
+	OnAfterNodeReadCallback   OnAfterReadInterface[Node]
 
 
 	Trees           map[*Tree]any
 	Trees_mapString map[string]*Tree
-	
+
+	OnAfterTreeCreateCallback OnAfterCreateInterface[Tree]
 	OnAfterTreeUpdateCallback OnAfterUpdateInterface[Tree]
+	OnAfterTreeDeleteCallback OnAfterDeleteInterface[Tree]
+	OnAfterTreeReadCallback   OnAfterReadInterface[Tree]
 
 
 	AllModelsStructCreateCallback AllModelsStructCreateInterface
@@ -63,9 +69,27 @@ type OnInitCommitInterface interface {
 	BeforeCommit(stage *StageStruct)
 }
 
+// OnAfterCreateInterface callback when an instance is updated from the front
+type OnAfterCreateInterface[Type Gongstruct] interface {
+	OnAfterCreate(stage *StageStruct,
+		instance *Type)
+}
+
+// OnAfterReadInterface callback when an instance is updated from the front
+type OnAfterReadInterface[Type Gongstruct] interface {
+	OnAfterRead(stage *StageStruct,
+		instance *Type)
+}
+
 // OnAfterUpdateInterface callback when an instance is updated from the front
 type OnAfterUpdateInterface[Type Gongstruct] interface {
 	OnAfterUpdate(stage *StageStruct,
+		instance *Type)
+}
+
+// OnAfterDeleteInterface callback when an instance is updated from the front
+type OnAfterDeleteInterface[Type Gongstruct] interface {
+	OnAfterDelete(stage *StageStruct,
 		instance *Type)
 }
 
