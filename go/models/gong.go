@@ -60,7 +60,8 @@ type OnInitCommitInterface interface {
 }
 
 type OnAfterUpdateInterface[Type Gongstruct] interface {
-	OnAfterUpdate(stage *StageStruct, instance *Type)
+	OnAfterUpdate(stage *StageStruct,
+		instance *Type)
 }
 
 type BackRepoInterface interface {

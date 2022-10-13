@@ -47,7 +47,7 @@ func stageInjection() {
 
 	// Node Child 1 values setup
 	__Node__000002_Child_1.Name = `Child 1`
-	__Node__000002_Child_1.IsExpanded = true
+	__Node__000002_Child_1.IsExpanded = false
 	__Node__000002_Child_1.HasCheckboxButton = true
 	__Node__000002_Child_1.IsChecked = false
 
@@ -67,7 +67,7 @@ func stageInjection() {
 	__Node__000005_Grand_Child_1_1.Name = `Grand Child 1.1`
 	__Node__000005_Grand_Child_1_1.IsExpanded = false
 	__Node__000005_Grand_Child_1_1.HasCheckboxButton = true
-	__Node__000005_Grand_Child_1_1.IsChecked = false
+	__Node__000005_Grand_Child_1_1.IsChecked = true
 
 	// Node Parent values setup
 	__Node__000006_Parent.Name = `Parent`

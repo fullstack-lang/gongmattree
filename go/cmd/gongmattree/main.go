@@ -226,8 +226,10 @@ func main() {
 type OnNodeUpdateCallbackStruct struct {
 }
 
-func (onNodeUpdateCallbackStruct *OnNodeUpdateCallbackStruct) OnAfterUpdate(stage *models.StageStruct,
+func (onNodeUpdateCallbackStruct OnNodeUpdateCallbackStruct) OnAfterUpdate(
+	stage *models.StageStruct,
 	node *models.Node) {
+	log.Println("Node updated " + node.Name)
 }
 
 type embedFileSystem struct {
