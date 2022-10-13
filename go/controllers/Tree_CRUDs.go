@@ -41,11 +41,12 @@ type TreeInput struct {
 //
 // swagger:route GET /trees trees getTrees
 //
-// Get all trees
+// # Get all trees
 //
 // Responses:
-//    default: genericError
-//        200: treeDBsResponse
+// default: genericError
+//
+//	200: treeDBResponse
 func GetTrees(c *gin.Context) {
 	db := orm.BackRepo.BackRepoTree.GetDB()
 
@@ -138,8 +139,9 @@ func PostTree(c *gin.Context) {
 // Gets the details for a tree.
 //
 // Responses:
-//    default: genericError
-//        200: treeDBResponse
+// default: genericError
+//
+//	200: treeDBResponse
 func GetTree(c *gin.Context) {
 	db := orm.BackRepo.BackRepoTree.GetDB()
 
@@ -169,8 +171,9 @@ func GetTree(c *gin.Context) {
 // Update a tree
 //
 // Responses:
-//    default: genericError
-//        200: treeDBResponse
+// default: genericError
+//
+//	200: treeDBResponse
 func UpdateTree(c *gin.Context) {
 	db := orm.BackRepo.BackRepoTree.GetDB()
 
@@ -215,6 +218,12 @@ func UpdateTree(c *gin.Context) {
 	// (this will be improved with implementation of unit of work design pattern)
 	orm.BackRepo.IncrementPushFromFrontNb()
 
+	// get stage instance from DB instance, and call callback function
+	tree := (*orm.BackRepo.BackRepoTree.Map_TreeDBID_TreePtr)[treeDB.ID]
+	if tree != nil {
+		models.AfterUpdateFromFront(&models.Stage, tree)
+	}
+
 	// return status OK with the marshalling of the the treeDB
 	c.JSON(http.StatusOK, treeDB)
 }
@@ -225,8 +234,9 @@ func UpdateTree(c *gin.Context) {
 //
 // Delete a tree
 //
-// Responses:
-//    default: genericError
+// default: genericError
+//
+//	200: treeDBResponse
 func DeleteTree(c *gin.Context) {
 	db := orm.BackRepo.BackRepoTree.GetDB()
 

@@ -34,9 +34,15 @@ type GongStructInterface interface {
 type StageStruct struct { // insertion point for definition of arrays registering instances
 	Nodes           map[*Node]any
 	Nodes_mapString map[string]*Node
+	
+	OnAfterNodeUpdateCallback OnAfterUpdateInterface[Node]
+
 
 	Trees           map[*Tree]any
 	Trees_mapString map[string]*Tree
+	
+	OnAfterTreeUpdateCallback OnAfterUpdateInterface[Tree]
+
 
 	AllModelsStructCreateCallback AllModelsStructCreateInterface
 
@@ -49,8 +55,6 @@ type StageStruct struct { // insertion point for definition of arrays registerin
 	OnInitCommitFromFrontCallback OnInitCommitInterface
 	OnInitCommitFromBackCallback  OnInitCommitInterface
 
-	OnAfterNodeUpdateCallback OnAfterUpdateInterface[Node]
-
 	// store the number of instance per gongstruct
 	Map_GongStructName_InstancesNb map[string]int
 }
@@ -59,6 +63,7 @@ type OnInitCommitInterface interface {
 	BeforeCommit(stage *StageStruct)
 }
 
+// OnAfterUpdateInterface callback when an instance is updated from the front
 type OnAfterUpdateInterface[Type Gongstruct] interface {
 	OnAfterUpdate(stage *StageStruct,
 		instance *Type)
@@ -593,6 +598,7 @@ func (stageStruct *StageStruct) CreateReverseMap_Node_Children() (res map[*Node]
 	return
 }
 
+
 // generate function for reverse association maps of Tree
 func (stageStruct *StageStruct) CreateReverseMap_Tree_RootNodes() (res map[*Node]*Tree) {
 	res = make(map[*Node]*Tree)
@@ -605,6 +611,7 @@ func (stageStruct *StageStruct) CreateReverseMap_Tree_RootNodes() (res map[*Node
 
 	return
 }
+
 
 // Gongstruct is the type parameter for generated generic function that allows
 // - access to staged instances
@@ -686,15 +693,6 @@ func GetGongstructInstancesSet[Type Gongstruct]() *map[*Type]any {
 		return any(&Stage.Trees).(*map[*Type]any)
 	default:
 		return nil
-	}
-}
-
-func IncrementCommitFromFrontNb[Type Gongstruct](stage *StageStruct) {
-	if stage.OnInitCommitCallback != nil {
-		stage.OnInitCommitCallback.BeforeCommit(stage)
-	}
-	if stage.OnInitCommitFromFrontCallback != nil {
-		stage.OnInitCommitFromFrontCallback.BeforeCommit(stage)
 	}
 }
 

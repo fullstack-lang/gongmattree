@@ -44,9 +44,9 @@ type NodeInput struct {
 // # Get all nodes
 //
 // Responses:
+// default: genericError
 //
-//	default: genericError
-//	    200: nodeDBsResponse
+//	200: nodeDBResponse
 func GetNodes(c *gin.Context) {
 	db := orm.BackRepo.BackRepoNode.GetDB()
 
@@ -86,15 +86,14 @@ func GetNodes(c *gin.Context) {
 // swagger:route POST /nodes nodes postNode
 //
 // Creates a node
+//     Consumes:
+//     - application/json
 //
-//	Consumes:
-//	- application/json
+//     Produces:
+//     - application/json
 //
-//	Produces:
-//	- application/json
-//
-//	Responses:
-//	  200: nodeDBResponse
+//     Responses:
+//       200: nodeDBResponse
 func PostNode(c *gin.Context) {
 	db := orm.BackRepo.BackRepoNode.GetDB()
 
@@ -140,9 +139,9 @@ func PostNode(c *gin.Context) {
 // Gets the details for a node.
 //
 // Responses:
+// default: genericError
 //
-//	default: genericError
-//	    200: nodeDBResponse
+//	200: nodeDBResponse
 func GetNode(c *gin.Context) {
 	db := orm.BackRepo.BackRepoNode.GetDB()
 
@@ -169,12 +168,12 @@ func GetNode(c *gin.Context) {
 //
 // swagger:route PATCH /nodes/{ID} nodes updateNode
 //
-// # Update a node
+// Update a node
 //
 // Responses:
+// default: genericError
 //
-//	default: genericError
-//	    200: nodeDBResponse
+//	200: nodeDBResponse
 func UpdateNode(c *gin.Context) {
 	db := orm.BackRepo.BackRepoNode.GetDB()
 
@@ -219,7 +218,7 @@ func UpdateNode(c *gin.Context) {
 	// (this will be improved with implementation of unit of work design pattern)
 	orm.BackRepo.IncrementPushFromFrontNb()
 
-	// get stage instance from DB instance
+	// get stage instance from DB instance, and call callback function
 	node := (*orm.BackRepo.BackRepoNode.Map_NodeDBID_NodePtr)[nodeDB.ID]
 	if node != nil {
 		models.AfterUpdateFromFront(&models.Stage, node)
@@ -233,11 +232,11 @@ func UpdateNode(c *gin.Context) {
 //
 // swagger:route DELETE /nodes/{ID} nodes deleteNode
 //
-// # Delete a node
+// Delete a node
 //
-// Responses:
+// default: genericError
 //
-//	default: genericError
+//	200: nodeDBResponse
 func DeleteNode(c *gin.Context) {
 	db := orm.BackRepo.BackRepoNode.GetDB()
 

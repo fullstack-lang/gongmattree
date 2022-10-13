@@ -88,7 +88,7 @@
 			]
 		},
 		{
-			"label": "01 - gongc gongmattree -backendOnly -skipGoModCommands",
+			"label": "01 - gongc gongmattree -skipNg=true -skipGoModCommands",
 			"type": "shell",
 			"options": {
 				"cwd": "${workspaceFolder}/go/models"
@@ -96,8 +96,8 @@
 			"command": "gongc",
 			"group": "build",
 			"args": [
-				"-backendOnly",
-				" -skipGoModCommands"
+				"-skipNg=true",
+				"-skipGoModCommands"
 			]
 		},
 		{
