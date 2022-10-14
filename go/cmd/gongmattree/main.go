@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/gin-contrib/cors"
@@ -231,8 +232,14 @@ type NodeCallbackStruct struct {
 
 func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterUpdate(
 	stage *models.StageStruct,
-	node *models.Node) {
-	log.Println("Node updated " + node.Name)
+	old, new *models.Node) {
+
+	if old.IsChecked != new.IsChecked {
+		log.Println("Node " + old.Name + " is updated with value IsChecked to " + strconv.FormatBool(new.IsChecked))
+	}
+	if old.IsExpanded != new.IsExpanded {
+		log.Println("Node " + old.Name + " is updated with value IsExpanded to " + strconv.FormatBool(new.IsExpanded))
+	}
 }
 
 func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterCreate(

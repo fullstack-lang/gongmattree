@@ -6,28 +6,30 @@ func AfterCreateFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 	switch target := any(instance).(type) {
 	// insertion point
 	case *Node:
-		if stage.OnAfterNodeUpdateCallback != nil {
-			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, target)
+		if stage.OnAfterNodeCreateCallback != nil {
+			stage.OnAfterNodeCreateCallback.OnAfterCreate(stage, target)
 		}
 	case *Tree:
-		if stage.OnAfterTreeUpdateCallback != nil {
-			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, target)
+		if stage.OnAfterTreeCreateCallback != nil {
+			stage.OnAfterTreeCreateCallback.OnAfterCreate(stage, target)
 		}
 	}
 }
 
 // AfterUpdateFromFront is called after a update from front
-func AfterUpdateFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
+func AfterUpdateFromFront[Type Gongstruct](stage *StageStruct, old, new *Type) {
 
-	switch target := any(instance).(type) {
+	switch oldTarget := any(old).(type) {
 	// insertion point
 	case *Node:
+		newTarget := any(new).(*Node)
 		if stage.OnAfterNodeUpdateCallback != nil {
-			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, target)
+			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, oldTarget, newTarget)
 		}
 	case *Tree:
+		newTarget := any(new).(*Tree)
 		if stage.OnAfterTreeUpdateCallback != nil {
-			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, target)
+			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, oldTarget, newTarget)
 		}
 	}
 }
@@ -38,12 +40,12 @@ func AfterDeleteFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 	switch target := any(instance).(type) {
 	// insertion point
 	case *Node:
-		if stage.OnAfterNodeUpdateCallback != nil {
-			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, target)
+		if stage.OnAfterNodeDeleteCallback != nil {
+			stage.OnAfterNodeDeleteCallback.OnAfterDelete(stage, target)
 		}
 	case *Tree:
-		if stage.OnAfterTreeUpdateCallback != nil {
-			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, target)
+		if stage.OnAfterTreeDeleteCallback != nil {
+			stage.OnAfterTreeDeleteCallback.OnAfterDelete(stage, target)
 		}
 	}
 }
@@ -54,12 +56,12 @@ func AfterReadFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 	switch target := any(instance).(type) {
 	// insertion point
 	case *Node:
-		if stage.OnAfterNodeUpdateCallback != nil {
-			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, target)
+		if stage.OnAfterNodeReadCallback != nil {
+			stage.OnAfterNodeReadCallback.OnAfterRead(stage, target)
 		}
 	case *Tree:
-		if stage.OnAfterTreeUpdateCallback != nil {
-			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, target)
+		if stage.OnAfterTreeReadCallback != nil {
+			stage.OnAfterTreeReadCallback.OnAfterRead(stage, target)
 		}
 	}
 }

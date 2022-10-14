@@ -128,7 +128,7 @@ func PostTree(c *gin.Context) {
 
 	// get an instance (not staged) from DB instance, and call callback function
 	tree := new(models.Tree)
-	treeDB.CopyBasicFieldsFromTree(tree)
+	treeDB.CopyBasicFieldsToTree(tree)
 
 	if tree != nil {
 		models.AfterCreateFromFront(&models.Stage, tree)
@@ -223,15 +223,21 @@ func UpdateTree(c *gin.Context) {
 		return
 	}
 
-	// an UPDATE generates a back repo commit increase
-	// (this will be improved with implementation of unit of work design pattern)
-	orm.BackRepo.IncrementPushFromFrontNb()
+	// get an instance (not staged) from DB instance, and call callback function
+	treeNew := new(models.Tree)
+	treeDB.CopyBasicFieldsToTree(treeNew)
 
 	// get stage instance from DB instance, and call callback function
-	tree := (*orm.BackRepo.BackRepoTree.Map_TreeDBID_TreePtr)[treeDB.ID]
-	if tree != nil {
-		models.AfterUpdateFromFront(&models.Stage, tree)
+	treeOld := (*orm.BackRepo.BackRepoTree.Map_TreeDBID_TreePtr)[treeDB.ID]
+	if treeOld != nil {
+		models.AfterUpdateFromFront(&models.Stage, treeOld, treeNew)
 	}
+
+	// an UPDATE generates a back repo commit increase
+	// (this will be improved with implementation of unit of work design pattern)
+	// in some cases, with the marshalling of the stage, this operation might
+	// generates a checkout
+	orm.BackRepo.IncrementPushFromFrontNb()
 
 	// return status OK with the marshalling of the the treeDB
 	c.JSON(http.StatusOK, treeDB)

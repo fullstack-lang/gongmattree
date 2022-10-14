@@ -3,3 +3,5 @@ go/cmd/gongmattree/gongmattree
 go/cmd/gongmattree/test.db
 go/cmd/gongmattree/gongmattree.exe
 go/cmd/gongmattree/gongmattree
+go/cmd/gongmattree/__debug_bin.exe
+go/cmd/gongmattree/gongmattree_aNl.exe

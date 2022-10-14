@@ -128,7 +128,7 @@ func PostNode(c *gin.Context) {
 
 	// get an instance (not staged) from DB instance, and call callback function
 	node := new(models.Node)
-	nodeDB.CopyBasicFieldsFromNode(node)
+	nodeDB.CopyBasicFieldsToNode(node)
 
 	if node != nil {
 		models.AfterCreateFromFront(&models.Stage, node)
@@ -223,15 +223,21 @@ func UpdateNode(c *gin.Context) {
 		return
 	}
 
-	// an UPDATE generates a back repo commit increase
-	// (this will be improved with implementation of unit of work design pattern)
-	orm.BackRepo.IncrementPushFromFrontNb()
+	// get an instance (not staged) from DB instance, and call callback function
+	nodeNew := new(models.Node)
+	nodeDB.CopyBasicFieldsToNode(nodeNew)
 
 	// get stage instance from DB instance, and call callback function
-	node := (*orm.BackRepo.BackRepoNode.Map_NodeDBID_NodePtr)[nodeDB.ID]
-	if node != nil {
-		models.AfterUpdateFromFront(&models.Stage, node)
+	nodeOld := (*orm.BackRepo.BackRepoNode.Map_NodeDBID_NodePtr)[nodeDB.ID]
+	if nodeOld != nil {
+		models.AfterUpdateFromFront(&models.Stage, nodeOld, nodeNew)
 	}
+
+	// an UPDATE generates a back repo commit increase
+	// (this will be improved with implementation of unit of work design pattern)
+	// in some cases, with the marshalling of the stage, this operation might
+	// generates a checkout
+	orm.BackRepo.IncrementPushFromFrontNb()
 
 	// return status OK with the marshalling of the the nodeDB
 	c.JSON(http.StatusOK, nodeDB)
