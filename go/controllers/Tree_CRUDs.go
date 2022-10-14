@@ -86,14 +86,15 @@ func GetTrees(c *gin.Context) {
 // swagger:route POST /trees trees postTree
 //
 // Creates a tree
-//     Consumes:
-//     - application/json
 //
-//     Produces:
-//     - application/json
+//	Consumes:
+//	- application/json
 //
-//     Responses:
-//       200: treeDBResponse
+//	Produces:
+//	- application/json
+//
+//	Responses:
+//	  200: nodeDBResponse
 func PostTree(c *gin.Context) {
 	db := orm.BackRepo.BackRepoTree.GetDB()
 
@@ -132,7 +133,6 @@ func PostTree(c *gin.Context) {
 	if tree != nil {
 		models.AfterCreateFromFront(&models.Stage, tree)
 	}
-
 
 	// a POST is equivalent to a back repo commit increase
 	// (this will be improved with implementation of unit of work design pattern)
@@ -177,7 +177,7 @@ func GetTree(c *gin.Context) {
 //
 // swagger:route PATCH /trees/{ID} trees updateTree
 //
-// Update a tree
+// # Update a tree
 //
 // Responses:
 // default: genericError
@@ -241,7 +241,7 @@ func UpdateTree(c *gin.Context) {
 //
 // swagger:route DELETE /trees/{ID} trees deleteTree
 //
-// Delete a tree
+// # Delete a tree
 //
 // default: genericError
 //

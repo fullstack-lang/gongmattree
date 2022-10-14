@@ -86,14 +86,15 @@ func GetNodes(c *gin.Context) {
 // swagger:route POST /nodes nodes postNode
 //
 // Creates a node
-//     Consumes:
-//     - application/json
 //
-//     Produces:
-//     - application/json
+//	Consumes:
+//	- application/json
 //
-//     Responses:
-//       200: nodeDBResponse
+//	Produces:
+//	- application/json
+//
+//	Responses:
+//	  200: nodeDBResponse
 func PostNode(c *gin.Context) {
 	db := orm.BackRepo.BackRepoNode.GetDB()
 
@@ -132,7 +133,6 @@ func PostNode(c *gin.Context) {
 	if node != nil {
 		models.AfterCreateFromFront(&models.Stage, node)
 	}
-
 
 	// a POST is equivalent to a back repo commit increase
 	// (this will be improved with implementation of unit of work design pattern)
@@ -177,7 +177,7 @@ func GetNode(c *gin.Context) {
 //
 // swagger:route PATCH /nodes/{ID} nodes updateNode
 //
-// Update a node
+// # Update a node
 //
 // Responses:
 // default: genericError
@@ -241,7 +241,7 @@ func UpdateNode(c *gin.Context) {
 //
 // swagger:route DELETE /nodes/{ID} nodes deleteNode
 //
-// Delete a node
+// # Delete a node
 //
 // default: genericError
 //
