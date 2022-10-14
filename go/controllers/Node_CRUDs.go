@@ -86,15 +86,14 @@ func GetNodes(c *gin.Context) {
 // swagger:route POST /nodes nodes postNode
 //
 // Creates a node
+//     Consumes:
+//     - application/json
 //
-//	Consumes:
-//	- application/json
+//     Produces:
+//     - application/json
 //
-//	Produces:
-//	- application/json
-//
-//	Responses:
-//	  200: nodeDBResponse
+//     Responses:
+//       200: nodeDBResponse
 func PostNode(c *gin.Context) {
 	db := orm.BackRepo.BackRepoNode.GetDB()
 
@@ -134,6 +133,7 @@ func PostNode(c *gin.Context) {
 		models.AfterCreateFromFront(&models.Stage, node)
 	}
 
+
 	// a POST is equivalent to a back repo commit increase
 	// (this will be improved with implementation of unit of work design pattern)
 	orm.BackRepo.IncrementPushFromFrontNb()
@@ -170,12 +170,6 @@ func GetNode(c *gin.Context) {
 	nodeAPI.NodePointersEnconding = nodeDB.NodePointersEnconding
 	nodeDB.CopyBasicFieldsToNode(&nodeAPI.Node)
 
-	// get stage instance from DB instance, and call callback function
-	node := (*orm.BackRepo.BackRepoNode.Map_NodeDBID_NodePtr)[nodeDB.ID]
-	if node != nil {
-		models.AfterReadFromFront(&models.Stage, node)
-	}
-
 	c.JSON(http.StatusOK, nodeAPI)
 }
 
@@ -183,7 +177,7 @@ func GetNode(c *gin.Context) {
 //
 // swagger:route PATCH /nodes/{ID} nodes updateNode
 //
-// # Update a node
+// Update a node
 //
 // Responses:
 // default: genericError
@@ -247,7 +241,7 @@ func UpdateNode(c *gin.Context) {
 //
 // swagger:route DELETE /nodes/{ID} nodes deleteNode
 //
-// # Delete a node
+// Delete a node
 //
 // default: genericError
 //

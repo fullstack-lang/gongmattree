@@ -4,12 +4,15 @@ package models
 func AfterCreateFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 
 	switch target := any(instance).(type) {
-	// insertion point for generic get functions
+	// insertion point
 	case *Node:
-		if stage.OnAfterNodeCreateCallback != nil {
-			stage.OnAfterNodeCreateCallback.OnAfterCreate(stage, target)
+		if stage.OnAfterNodeUpdateCallback != nil {
+			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, target)
 		}
-	case Tree:
+	case *Tree:
+		if stage.OnAfterTreeUpdateCallback != nil {
+			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, target)
+		}
 	}
 }
 
@@ -17,12 +20,15 @@ func AfterCreateFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 func AfterUpdateFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 
 	switch target := any(instance).(type) {
-	// insertion point for generic get functions
+	// insertion point
 	case *Node:
 		if stage.OnAfterNodeUpdateCallback != nil {
 			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, target)
 		}
-	case Tree:
+	case *Tree:
+		if stage.OnAfterTreeUpdateCallback != nil {
+			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, target)
+		}
 	}
 }
 
@@ -30,12 +36,15 @@ func AfterUpdateFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 func AfterDeleteFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 
 	switch target := any(instance).(type) {
-	// insertion point for generic get functions
+	// insertion point
 	case *Node:
-		if stage.OnAfterNodeDeleteCallback != nil {
-			stage.OnAfterNodeDeleteCallback.OnAfterDelete(stage, target)
+		if stage.OnAfterNodeUpdateCallback != nil {
+			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, target)
 		}
-	case Tree:
+	case *Tree:
+		if stage.OnAfterTreeUpdateCallback != nil {
+			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, target)
+		}
 	}
 }
 
@@ -43,12 +52,15 @@ func AfterDeleteFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 func AfterReadFromFront[Type Gongstruct](stage *StageStruct, instance *Type) {
 
 	switch target := any(instance).(type) {
-	// insertion point for generic get functions
+	// insertion point
 	case *Node:
-		if stage.OnAfterNodeReadCallback != nil {
-			stage.OnAfterNodeReadCallback.OnAfterRead(stage, target)
+		if stage.OnAfterNodeUpdateCallback != nil {
+			stage.OnAfterNodeUpdateCallback.OnAfterUpdate(stage, target)
 		}
-	case Tree:
+	case *Tree:
+		if stage.OnAfterTreeUpdateCallback != nil {
+			stage.OnAfterTreeUpdateCallback.OnAfterUpdate(stage, target)
+		}
 	}
 }
 
@@ -57,9 +69,51 @@ func SetCallbackAfterUpdateFromFront[Type Gongstruct](stage *StageStruct, callba
 
 	var instance Type
 	switch any(instance).(type) {
-	// insertion point for generic get functions
-	case Node:
+		// insertion point
+	case *Node:
 		stage.OnAfterNodeUpdateCallback = any(callback).(OnAfterUpdateInterface[Node])
-	case Tree:
+	
+	case *Tree:
+		stage.OnAfterTreeUpdateCallback = any(callback).(OnAfterUpdateInterface[Tree])
+	
+	}
+}
+func SetCallbackAfterCreateFromFront[Type Gongstruct](stage *StageStruct, callback OnAfterCreateInterface[Type]) {
+
+	var instance Type
+	switch any(instance).(type) {
+		// insertion point
+	case *Node:
+		stage.OnAfterNodeCreateCallback = any(callback).(OnAfterCreateInterface[Node])
+	
+	case *Tree:
+		stage.OnAfterTreeCreateCallback = any(callback).(OnAfterCreateInterface[Tree])
+	
+	}
+}
+func SetCallbackAfterDeleteFromFront[Type Gongstruct](stage *StageStruct, callback OnAfterDeleteInterface[Type]) {
+
+	var instance Type
+	switch any(instance).(type) {
+		// insertion point
+	case *Node:
+		stage.OnAfterNodeDeleteCallback = any(callback).(OnAfterDeleteInterface[Node])
+	
+	case *Tree:
+		stage.OnAfterTreeDeleteCallback = any(callback).(OnAfterDeleteInterface[Tree])
+	
+	}
+}
+func SetCallbackAfterReadFromFront[Type Gongstruct](stage *StageStruct, callback OnAfterReadInterface[Type]) {
+
+	var instance Type
+	switch any(instance).(type) {
+		// insertion point
+	case *Node:
+		stage.OnAfterNodeReadCallback = any(callback).(OnAfterReadInterface[Node])
+	
+	case *Tree:
+		stage.OnAfterTreeReadCallback = any(callback).(OnAfterReadInterface[Tree])
+	
 	}
 }
