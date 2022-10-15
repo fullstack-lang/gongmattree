@@ -65,7 +65,7 @@ export class TreeComponent implements OnInit {
 
   constructor(
     private gongmattreeFrontRepoService: gongmattree.FrontRepoService,
-    private gongmattreeCommitNbService: gongmattree.CommitNbService,
+    private gongmattreeCommitNbFromBackService: gongmattree.CommitNbFromBackService,
     private gongmattreePushFromFrontNbService: gongmattree.PushFromFrontNbService,
     private gongmattreeNodeService: gongmattree.NodeService,
 
@@ -76,28 +76,28 @@ export class TreeComponent implements OnInit {
 
   // the component is refreshed when modification are performed in the back repo 
   // 
-  // the checkCommitNbTimer polls the commit number of the back repo
+  // the checkCommitNbFromBackTimer polls the commit number of the back repo
   // if the commit number has increased, it pulls the front repo and redraw the diagram
 
-  checkCommitNbTimer: Observable<number> = timer(500, 500);
-  lastCommitNb = -1
+  checkCommitNbFromBackTimer: Observable<number> = timer(500, 500);
+  lastCommitNbFromBack = -1
   lastPushFromFrontNb = -1
   currTime: number = 0
 
   ngOnInit(): void {
 
-    this.checkCommitNbTimer.subscribe(
+    this.checkCommitNbFromBackTimer.subscribe(
       currTime => {
         this.currTime = currTime
 
         // see above for the explanation
-        this.gongmattreeCommitNbService.getCommitNb().subscribe(
-          commitNb => {
-            if (this.lastCommitNb < commitNb) {
+        this.gongmattreeCommitNbFromBackService.getCommitNbFromBack().subscribe(
+          commitNbFromBack => {
+            if (this.lastCommitNbFromBack < commitNbFromBack) {
 
-              console.log("last commit nb " + this.lastCommitNb + " new: " + commitNb)
+              console.log("last commit nb " + this.lastCommitNbFromBack + " new: " + commitNbFromBack)
               this.refresh()
-              this.lastCommitNb = commitNb
+              this.lastCommitNbFromBack = commitNbFromBack
             }
           }
         )

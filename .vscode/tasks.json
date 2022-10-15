@@ -76,6 +76,46 @@
 			]
 		},
 		{
+			"label": "01 - gongc gongmattree -backendOnly -compileForDebug",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/go/models"
+			},
+			"command": "gongc",
+			"group": "build",
+			"args": [
+				"-backendOnly",
+				"-compileForDebug"
+			]
+		},
+		{
+			"label": "01 - gongc gongmattree -skipGoModCommands -skipNg -compileForDebug",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/go/models"
+			},
+			"command": "gongc",
+			"group": "build",
+			"args": [
+				"-skipNg",
+				"-skipGoModCommands",
+				"-compileForDebug"
+			]
+		},
+		{
+			"label": "01 - gongc gongmattree -skipGoModCommands -compileForDebug",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/go/models"
+			},
+			"command": "gongc",
+			"group": "build",
+			"args": [
+				"-skipGoModCommands",
+				"-compileForDebug"
+			]
+		},
+		{
 			"label": "01 - gongc gongmattree -skipGoModCommands",
 			"type": "shell",
 			"options": {
