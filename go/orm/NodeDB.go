@@ -84,6 +84,10 @@ type NodeDB struct {
 	// Declation for basic field nodeDB.IsChecked
 	// provide the sql storage for the boolan
 	IsChecked_Data sql.NullBool
+
+	// Declation for basic field nodeDB.IsDisabled
+	// provide the sql storage for the boolan
+	IsDisabled_Data sql.NullBool
 	// encoding of pointers
 	NodePointersEnconding
 }
@@ -112,6 +116,8 @@ type NodeWOP struct {
 	HasCheckboxButton bool `xlsx:"3"`
 
 	IsChecked bool `xlsx:"4"`
+
+	IsDisabled bool `xlsx:"5"`
 	// insertion for WOP pointer fields
 }
 
@@ -122,6 +128,7 @@ var Node_Fields = []string{
 	"IsExpanded",
 	"HasCheckboxButton",
 	"IsChecked",
+	"IsDisabled",
 }
 
 type BackRepoNodeStruct struct {
@@ -425,6 +432,7 @@ func (backRepo *BackRepoStruct) CommitNode(node *models.Node) {
 	if id, ok := (*backRepo.BackRepoNode.Map_NodePtr_NodeDBID)[node]; ok {
 		backRepo.BackRepoNode.CommitPhaseTwoInstance(backRepo, id, node)
 	}
+	backRepo.CommitFromBackNb = backRepo.CommitFromBackNb + 1
 }
 
 // CommitNode allows checkout of a single node (if already staged and with a BackRepo id)
@@ -460,6 +468,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNode(node *models.Node) {
 
 	nodeDB.IsChecked_Data.Bool = node.IsChecked
 	nodeDB.IsChecked_Data.Valid = true
+
+	nodeDB.IsDisabled_Data.Bool = node.IsDisabled
+	nodeDB.IsDisabled_Data.Valid = true
 }
 
 // CopyBasicFieldsFromNodeWOP
@@ -477,6 +488,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNodeWOP(node *NodeWOP) {
 
 	nodeDB.IsChecked_Data.Bool = node.IsChecked
 	nodeDB.IsChecked_Data.Valid = true
+
+	nodeDB.IsDisabled_Data.Bool = node.IsDisabled
+	nodeDB.IsDisabled_Data.Valid = true
 }
 
 // CopyBasicFieldsToNode
@@ -486,6 +500,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNode(node *models.Node) {
 	node.IsExpanded = nodeDB.IsExpanded_Data.Bool
 	node.HasCheckboxButton = nodeDB.HasCheckboxButton_Data.Bool
 	node.IsChecked = nodeDB.IsChecked_Data.Bool
+	node.IsDisabled = nodeDB.IsDisabled_Data.Bool
 }
 
 // CopyBasicFieldsToNodeWOP
@@ -496,6 +511,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNodeWOP(node *NodeWOP) {
 	node.IsExpanded = nodeDB.IsExpanded_Data.Bool
 	node.HasCheckboxButton = nodeDB.HasCheckboxButton_Data.Bool
 	node.IsChecked = nodeDB.IsChecked_Data.Bool
+	node.IsDisabled = nodeDB.IsDisabled_Data.Bool
 }
 
 // Backup generates a json file from a slice of all NodeDB instances in the backrepo

@@ -392,6 +392,7 @@ func (backRepo *BackRepoStruct) CommitTree(tree *models.Tree) {
 	if id, ok := (*backRepo.BackRepoTree.Map_TreePtr_TreeDBID)[tree]; ok {
 		backRepo.BackRepoTree.CommitPhaseTwoInstance(backRepo, id, tree)
 	}
+	backRepo.CommitFromBackNb = backRepo.CommitFromBackNb + 1
 }
 
 // CommitTree allows checkout of a single tree (if already staged and with a BackRepo id)

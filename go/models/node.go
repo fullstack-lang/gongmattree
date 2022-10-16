@@ -8,6 +8,7 @@ type Node struct {
 	// fields related to the selection of the node by a check box
 	HasCheckboxButton bool
 	IsChecked         bool
+	IsDisabled        bool
 
 	Children []*Node
 }

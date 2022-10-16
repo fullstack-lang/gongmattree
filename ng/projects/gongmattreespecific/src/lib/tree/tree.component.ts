@@ -38,7 +38,6 @@ export class TreeComponent implements OnInit {
   private _transformer = (node: Node, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
-
       gongNode: node.gongNode,
       name: node.name,
       level: level,
@@ -124,7 +123,7 @@ export class TreeComponent implements OnInit {
         this.gongmattreeFrontRepo = gongmattreesFrontRepo
 
 
-        var treeSingloton : gongmattree.TreeDB = new(gongmattree.TreeDB)
+        var treeSingloton: gongmattree.TreeDB = new (gongmattree.TreeDB)
         var selected: boolean = false
         for (var tree of this.gongmattreeFrontRepo.Trees_array) {
           if (tree.Name == this.treeName) {
