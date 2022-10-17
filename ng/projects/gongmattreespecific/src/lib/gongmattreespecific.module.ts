@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 
 import { GongmattreespecificComponent } from './gongmattreespecific.component';
 
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { TreeComponent } from './tree/tree.component';
 
 import { MatSliderModule } from '@angular/material/slider';
@@ -32,6 +35,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     TreeComponent
   ],
   imports: [
+    FormsModule,
+		ReactiveFormsModule,
+    
     MatTreeModule,
     MatIconModule,
     MatButtonModule,

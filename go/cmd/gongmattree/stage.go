@@ -21,11 +21,8 @@ func stageInjection() {
 	__Node__000000_Child_1 := (&models.Node{Name: "Child 1"}).Stage()
 	__Node__000001_Child_1_1_1 := (&models.Node{Name: "Child 1.1.1"}).Stage()
 	__Node__000002_Child2 := (&models.Node{Name: "Child2"}).Stage()
-	__Node__000003_aaaaa := (&models.Node{Name: "aaaaa"}).Stage()
-	__Node__000004_new_node := (&models.Node{Name: "new node"}).Stage()
-	__Node__000005_new_node := (&models.Node{Name: "new node"}).Stage()
-	__Node__000006_new_node := (&models.Node{Name: "new node"}).Stage()
-	__Node__000007_new_node := (&models.Node{Name: "new node"}).Stage()
+	__Node__000003_new_node := (&models.Node{Name: "new node"}).Stage()
+	__Node__000004_ttot := (&models.Node{Name: "ttot"}).Stage()
 
 	// Declarations of staged instances of Tree
 	__Tree__000000_Tree_1 := (&models.Tree{Name: "Tree 1"}).Stage()
@@ -62,66 +59,33 @@ func stageInjection() {
 	__Node__000002_Child2.HasEditButton = false
 	__Node__000002_Child2.IsInEditMode = false
 
-	// Node aaaaa values setup
-	__Node__000003_aaaaa.Name = `aaaaa`
-	__Node__000003_aaaaa.IsExpanded = true
-	__Node__000003_aaaaa.HasCheckboxButton = true
-	__Node__000003_aaaaa.IsChecked = true
-	__Node__000003_aaaaa.IsCheckboxDisabled = false
-	__Node__000003_aaaaa.HasAddChildButton = true
-	__Node__000003_aaaaa.HasEditButton = true
-	__Node__000003_aaaaa.IsInEditMode = true
-
 	// Node new node values setup
-	__Node__000004_new_node.Name = `new node`
-	__Node__000004_new_node.IsExpanded = false
-	__Node__000004_new_node.HasCheckboxButton = false
-	__Node__000004_new_node.IsChecked = false
-	__Node__000004_new_node.IsCheckboxDisabled = false
-	__Node__000004_new_node.HasAddChildButton = false
-	__Node__000004_new_node.HasEditButton = false
-	__Node__000004_new_node.IsInEditMode = false
+	__Node__000003_new_node.Name = `new node`
+	__Node__000003_new_node.IsExpanded = false
+	__Node__000003_new_node.HasCheckboxButton = false
+	__Node__000003_new_node.IsChecked = false
+	__Node__000003_new_node.IsCheckboxDisabled = false
+	__Node__000003_new_node.HasAddChildButton = false
+	__Node__000003_new_node.HasEditButton = false
+	__Node__000003_new_node.IsInEditMode = false
 
-	// Node new node values setup
-	__Node__000005_new_node.Name = `new node`
-	__Node__000005_new_node.IsExpanded = false
-	__Node__000005_new_node.HasCheckboxButton = false
-	__Node__000005_new_node.IsChecked = false
-	__Node__000005_new_node.IsCheckboxDisabled = false
-	__Node__000005_new_node.HasAddChildButton = false
-	__Node__000005_new_node.HasEditButton = false
-	__Node__000005_new_node.IsInEditMode = false
-
-	// Node new node values setup
-	__Node__000006_new_node.Name = `new node`
-	__Node__000006_new_node.IsExpanded = false
-	__Node__000006_new_node.HasCheckboxButton = false
-	__Node__000006_new_node.IsChecked = false
-	__Node__000006_new_node.IsCheckboxDisabled = false
-	__Node__000006_new_node.HasAddChildButton = false
-	__Node__000006_new_node.HasEditButton = false
-	__Node__000006_new_node.IsInEditMode = false
-
-	// Node new node values setup
-	__Node__000007_new_node.Name = `new node`
-	__Node__000007_new_node.IsExpanded = true
-	__Node__000007_new_node.HasCheckboxButton = false
-	__Node__000007_new_node.IsChecked = false
-	__Node__000007_new_node.IsCheckboxDisabled = false
-	__Node__000007_new_node.HasAddChildButton = true
-	__Node__000007_new_node.HasEditButton = false
-	__Node__000007_new_node.IsInEditMode = false
+	// Node ttot values setup
+	__Node__000004_ttot.Name = `ttot`
+	__Node__000004_ttot.IsExpanded = true
+	__Node__000004_ttot.HasCheckboxButton = true
+	__Node__000004_ttot.IsChecked = true
+	__Node__000004_ttot.IsCheckboxDisabled = false
+	__Node__000004_ttot.HasAddChildButton = true
+	__Node__000004_ttot.HasEditButton = true
+	__Node__000004_ttot.IsInEditMode = false
 
 	// Tree Tree 1 values setup
 	__Tree__000000_Tree_1.Name = `Tree 1`
 
 	// Setup of pointers
-	__Node__000000_Child_1.Children = append(__Node__000000_Child_1.Children, __Node__000003_aaaaa)
-	__Node__000003_aaaaa.Children = append(__Node__000003_aaaaa.Children, __Node__000001_Child_1_1_1)
-	__Node__000003_aaaaa.Children = append(__Node__000003_aaaaa.Children, __Node__000007_new_node)
-	__Node__000003_aaaaa.Children = append(__Node__000003_aaaaa.Children, __Node__000004_new_node)
-	__Node__000007_new_node.Children = append(__Node__000007_new_node.Children, __Node__000005_new_node)
-	__Node__000007_new_node.Children = append(__Node__000007_new_node.Children, __Node__000006_new_node)
+	__Node__000000_Child_1.Children = append(__Node__000000_Child_1.Children, __Node__000004_ttot)
+	__Node__000004_ttot.Children = append(__Node__000004_ttot.Children, __Node__000001_Child_1_1_1)
+	__Node__000004_ttot.Children = append(__Node__000004_ttot.Children, __Node__000003_new_node)
 	__Tree__000000_Tree_1.RootNodes = append(__Tree__000000_Tree_1.RootNodes, __Node__000002_Child2)
 	__Tree__000000_Tree_1.RootNodes = append(__Tree__000000_Tree_1.RootNodes, __Node__000000_Child_1)
 }
