@@ -92,6 +92,10 @@ type NodeDB struct {
 	// Declation for basic field nodeDB.HasAddChildButton
 	// provide the sql storage for the boolan
 	HasAddChildButton_Data sql.NullBool
+
+	// Declation for basic field nodeDB.HasEditButton
+	// provide the sql storage for the boolan
+	HasEditButton_Data sql.NullBool
 	// encoding of pointers
 	NodePointersEnconding
 }
@@ -124,6 +128,8 @@ type NodeWOP struct {
 	IsCheckboxDisabled bool `xlsx:"5"`
 
 	HasAddChildButton bool `xlsx:"6"`
+
+	HasEditButton bool `xlsx:"7"`
 	// insertion for WOP pointer fields
 }
 
@@ -136,6 +142,7 @@ var Node_Fields = []string{
 	"IsChecked",
 	"IsCheckboxDisabled",
 	"HasAddChildButton",
+	"HasEditButton",
 }
 
 type BackRepoNodeStruct struct {
@@ -481,6 +488,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNode(node *models.Node) {
 
 	nodeDB.HasAddChildButton_Data.Bool = node.HasAddChildButton
 	nodeDB.HasAddChildButton_Data.Valid = true
+
+	nodeDB.HasEditButton_Data.Bool = node.HasEditButton
+	nodeDB.HasEditButton_Data.Valid = true
 }
 
 // CopyBasicFieldsFromNodeWOP
@@ -504,6 +514,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNodeWOP(node *NodeWOP) {
 
 	nodeDB.HasAddChildButton_Data.Bool = node.HasAddChildButton
 	nodeDB.HasAddChildButton_Data.Valid = true
+
+	nodeDB.HasEditButton_Data.Bool = node.HasEditButton
+	nodeDB.HasEditButton_Data.Valid = true
 }
 
 // CopyBasicFieldsToNode
@@ -515,6 +528,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNode(node *models.Node) {
 	node.IsChecked = nodeDB.IsChecked_Data.Bool
 	node.IsCheckboxDisabled = nodeDB.IsCheckboxDisabled_Data.Bool
 	node.HasAddChildButton = nodeDB.HasAddChildButton_Data.Bool
+	node.HasEditButton = nodeDB.HasEditButton_Data.Bool
 }
 
 // CopyBasicFieldsToNodeWOP
@@ -527,6 +541,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNodeWOP(node *NodeWOP) {
 	node.IsChecked = nodeDB.IsChecked_Data.Bool
 	node.IsCheckboxDisabled = nodeDB.IsCheckboxDisabled_Data.Bool
 	node.HasAddChildButton = nodeDB.HasAddChildButton_Data.Bool
+	node.HasEditButton = nodeDB.HasEditButton_Data.Bool
 }
 
 // Backup generates a json file from a slice of all NodeDB instances in the backrepo

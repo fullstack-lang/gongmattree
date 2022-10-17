@@ -39,6 +39,7 @@ func stageInjection() {
 	__Node__000000_Child_1.IsChecked = false
 	__Node__000000_Child_1.IsCheckboxDisabled = true
 	__Node__000000_Child_1.HasAddChildButton = false
+	__Node__000000_Child_1.HasEditButton = false
 
 	// Node Child 1.1 values setup
 	__Node__000001_Child_1_1.Name = `Child 1.1`
@@ -47,6 +48,7 @@ func stageInjection() {
 	__Node__000001_Child_1_1.IsChecked = true
 	__Node__000001_Child_1_1.IsCheckboxDisabled = false
 	__Node__000001_Child_1_1.HasAddChildButton = true
+	__Node__000001_Child_1_1.HasEditButton = true
 
 	// Node Child 1.1.1 values setup
 	__Node__000002_Child_1_1_1.Name = `Child 1.1.1`
@@ -55,6 +57,7 @@ func stageInjection() {
 	__Node__000002_Child_1_1_1.IsChecked = false
 	__Node__000002_Child_1_1_1.IsCheckboxDisabled = false
 	__Node__000002_Child_1_1_1.HasAddChildButton = false
+	__Node__000002_Child_1_1_1.HasEditButton = false
 
 	// Node Child2 values setup
 	__Node__000003_Child2.Name = `Child2`
@@ -63,6 +66,7 @@ func stageInjection() {
 	__Node__000003_Child2.IsChecked = false
 	__Node__000003_Child2.IsCheckboxDisabled = false
 	__Node__000003_Child2.HasAddChildButton = false
+	__Node__000003_Child2.HasEditButton = false
 
 	// Node new node values setup
 	__Node__000004_new_node.Name = `new node`
@@ -71,6 +75,7 @@ func stageInjection() {
 	__Node__000004_new_node.IsChecked = false
 	__Node__000004_new_node.IsCheckboxDisabled = false
 	__Node__000004_new_node.HasAddChildButton = false
+	__Node__000004_new_node.HasEditButton = false
 
 	// Node new node values setup
 	__Node__000005_new_node.Name = `new node`
@@ -79,6 +84,7 @@ func stageInjection() {
 	__Node__000005_new_node.IsChecked = false
 	__Node__000005_new_node.IsCheckboxDisabled = false
 	__Node__000005_new_node.HasAddChildButton = false
+	__Node__000005_new_node.HasEditButton = false
 
 	// Node new node values setup
 	__Node__000006_new_node.Name = `new node`
@@ -87,6 +93,7 @@ func stageInjection() {
 	__Node__000006_new_node.IsChecked = false
 	__Node__000006_new_node.IsCheckboxDisabled = false
 	__Node__000006_new_node.HasAddChildButton = false
+	__Node__000006_new_node.HasEditButton = false
 
 	// Node new node values setup
 	__Node__000007_new_node.Name = `new node`
@@ -95,6 +102,7 @@ func stageInjection() {
 	__Node__000007_new_node.IsChecked = false
 	__Node__000007_new_node.IsCheckboxDisabled = false
 	__Node__000007_new_node.HasAddChildButton = true
+	__Node__000007_new_node.HasEditButton = false
 
 	// Tree Tree 1 values setup
 	__Tree__000000_Tree_1.Name = `Tree 1`

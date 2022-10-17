@@ -16,6 +16,7 @@ export class NodeDB {
 	IsChecked: boolean = false
 	IsCheckboxDisabled: boolean = false
 	HasAddChildButton: boolean = false
+	HasEditButton: boolean = false
 
 	// insertion point for other declarations
 	Children?: Array<NodeDB>

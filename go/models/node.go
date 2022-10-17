@@ -12,5 +12,7 @@ type Node struct {
 
 	HasAddChildButton bool
 
+	HasEditButton bool
+
 	Children []*Node
 }

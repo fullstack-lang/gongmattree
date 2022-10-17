@@ -212,4 +212,7 @@ export class TreeComponent implements OnInit {
       }
     )
   }
+
+  edit(node: FlatNode) {
+  }
 }

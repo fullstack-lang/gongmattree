@@ -61,6 +61,13 @@
             </td>
         </ng-container>
         <!-- -->
+        <ng-container matColumnDef="HasEditButton">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> HasEditButton </th>
+            <td mat-cell *matCellDef="let Node">
+                <mat-checkbox [checked]="Node.HasEditButton" disabled=true></mat-checkbox>
+            </td>
+        </ng-container>
+        <!-- -->
         <ng-container matColumnDef="Node_Children">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> <-- (Node) Children </th>
             <td mat-cell *matCellDef="let node">

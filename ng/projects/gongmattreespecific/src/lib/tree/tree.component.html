@@ -8,6 +8,9 @@
         <div *ngIf="!node.gongNode.HasCheckboxButton">
             {{node.name}}
         </div>
+        <button *ngIf="node.gongNode.HasEditButton" mat-icon-button (click)="edit(node)">
+            <mat-icon>edit</mat-icon>
+        </button>
         <button mat-icon-button *ngIf="node.gongNode.HasAddChildButton" (click)="addNewItem(node)">
             <mat-icon>add</mat-icon>
         </button>
@@ -26,8 +29,12 @@
         <div *ngIf="!node.gongNode.HasCheckboxButton">
             {{node.name}}
         </div>
+        <button *ngIf="node.gongNode.HasEditButton" mat-icon-button (click)="edit(node)">
+            <mat-icon>edit</mat-icon>
+        </button>
         <button *ngIf="node.gongNode.HasAddChildButton" mat-icon-button (click)="addNewItem(node)">
             <mat-icon>add</mat-icon>
         </button>
+
     </mat-tree-node>
 </mat-tree>
