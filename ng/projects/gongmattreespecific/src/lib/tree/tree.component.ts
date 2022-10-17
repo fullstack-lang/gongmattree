@@ -214,5 +214,21 @@ export class TreeComponent implements OnInit {
   }
 
   edit(node: FlatNode) {
+    node.gongNode.IsInEditMode = true
+    this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
+      gongmattreeNode => {
+        console.log("updated node")
+      }
+    )
+  }
+
+  saveNode(node: FlatNode, value: string) {
+    node.gongNode.Name = value
+    node.gongNode.IsInEditMode = false
+    this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
+      gongmattreeNode => {
+        console.log("updated node")
+      }
+    )
   }
 }

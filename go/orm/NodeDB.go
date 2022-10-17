@@ -96,6 +96,10 @@ type NodeDB struct {
 	// Declation for basic field nodeDB.HasEditButton
 	// provide the sql storage for the boolan
 	HasEditButton_Data sql.NullBool
+
+	// Declation for basic field nodeDB.IsInEditMode
+	// provide the sql storage for the boolan
+	IsInEditMode_Data sql.NullBool
 	// encoding of pointers
 	NodePointersEnconding
 }
@@ -130,6 +134,8 @@ type NodeWOP struct {
 	HasAddChildButton bool `xlsx:"6"`
 
 	HasEditButton bool `xlsx:"7"`
+
+	IsInEditMode bool `xlsx:"8"`
 	// insertion for WOP pointer fields
 }
 
@@ -143,6 +149,7 @@ var Node_Fields = []string{
 	"IsCheckboxDisabled",
 	"HasAddChildButton",
 	"HasEditButton",
+	"IsInEditMode",
 }
 
 type BackRepoNodeStruct struct {
@@ -491,6 +498,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNode(node *models.Node) {
 
 	nodeDB.HasEditButton_Data.Bool = node.HasEditButton
 	nodeDB.HasEditButton_Data.Valid = true
+
+	nodeDB.IsInEditMode_Data.Bool = node.IsInEditMode
+	nodeDB.IsInEditMode_Data.Valid = true
 }
 
 // CopyBasicFieldsFromNodeWOP
@@ -517,6 +527,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNodeWOP(node *NodeWOP) {
 
 	nodeDB.HasEditButton_Data.Bool = node.HasEditButton
 	nodeDB.HasEditButton_Data.Valid = true
+
+	nodeDB.IsInEditMode_Data.Bool = node.IsInEditMode
+	nodeDB.IsInEditMode_Data.Valid = true
 }
 
 // CopyBasicFieldsToNode
@@ -529,6 +542,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNode(node *models.Node) {
 	node.IsCheckboxDisabled = nodeDB.IsCheckboxDisabled_Data.Bool
 	node.HasAddChildButton = nodeDB.HasAddChildButton_Data.Bool
 	node.HasEditButton = nodeDB.HasEditButton_Data.Bool
+	node.IsInEditMode = nodeDB.IsInEditMode_Data.Bool
 }
 
 // CopyBasicFieldsToNodeWOP
@@ -542,6 +556,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNodeWOP(node *NodeWOP) {
 	node.IsCheckboxDisabled = nodeDB.IsCheckboxDisabled_Data.Bool
 	node.HasAddChildButton = nodeDB.HasAddChildButton_Data.Bool
 	node.HasEditButton = nodeDB.HasEditButton_Data.Bool
+	node.IsInEditMode = nodeDB.IsInEditMode_Data.Bool
 }
 
 // Backup generates a json file from a slice of all NodeDB instances in the backrepo
