@@ -15,5 +15,7 @@ type Node struct {
 	HasEditButton bool
 	IsInEditMode  bool
 
+	HasDeleteButton bool
+
 	Children []*Node
 }

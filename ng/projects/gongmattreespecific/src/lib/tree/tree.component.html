@@ -13,7 +13,7 @@
             <mat-label>Name</mat-label>
             <input name="" [ngModelOptions]="{standalone: true}" matInput [(ngModel)]="node.gongNode.Name">
         </mat-form-field>
-        <button *ngIf='node.gongNode.IsInEditMode' mat-button (click)="saveNode(node)">
+        <button *ngIf='node.gongNode.IsInEditMode' mat-button (click)="update(node)">
             <mat-icon
                 [ngStyle]="{'color':'rgba(0,0,0,.50)'}">save
             </mat-icon>
@@ -28,6 +28,11 @@
             <mat-icon
                 [ngStyle]="{'color':'rgba(0,0,0,.50)'}">
                 add</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="node.gongNode.HasDeleteButton  && !node.gongNode.IsInEditMode" (click)="deleteNode(node)">
+            <mat-icon
+                [ngStyle]="{'color':'rgba(0,0,0,.50)'}">
+                delete</mat-icon>
         </button>
     </mat-tree-node>
     <!-- This is the tree node template for expandable nodes -->
@@ -51,7 +56,7 @@
             <mat-label>Name</mat-label>
             <input name="" [ngModelOptions]="{standalone: true}" matInput [(ngModel)]="node.gongNode.Name">
         </mat-form-field>
-        <button *ngIf='node.gongNode.IsInEditMode' mat-button (click)="saveNode(node)">
+        <button *ngIf='node.gongNode.IsInEditMode' mat-button (click)="update(node)">
             <mat-icon
                 [ngStyle]="{'color':'rgba(0,0,0,.50)'}">save
             </mat-icon>
@@ -67,6 +72,10 @@
                 [ngStyle]="{'color':'rgba(0,0,0,.50)'}">add
             </mat-icon>
         </button>
-
+        <button mat-icon-button *ngIf="node.gongNode.HasDeleteButton  && !node.gongNode.IsInEditMode" (click)="deleteNode(node)">
+            <mat-icon
+                [ngStyle]="{'color':'rgba(0,0,0,.50)'}">
+                delete</mat-icon>
+        </button>
     </mat-tree-node>
 </mat-tree>

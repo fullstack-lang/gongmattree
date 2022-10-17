@@ -100,6 +100,10 @@ type NodeDB struct {
 	// Declation for basic field nodeDB.IsInEditMode
 	// provide the sql storage for the boolan
 	IsInEditMode_Data sql.NullBool
+
+	// Declation for basic field nodeDB.HasDeleteButton
+	// provide the sql storage for the boolan
+	HasDeleteButton_Data sql.NullBool
 	// encoding of pointers
 	NodePointersEnconding
 }
@@ -136,6 +140,8 @@ type NodeWOP struct {
 	HasEditButton bool `xlsx:"7"`
 
 	IsInEditMode bool `xlsx:"8"`
+
+	HasDeleteButton bool `xlsx:"9"`
 	// insertion for WOP pointer fields
 }
 
@@ -150,6 +156,7 @@ var Node_Fields = []string{
 	"HasAddChildButton",
 	"HasEditButton",
 	"IsInEditMode",
+	"HasDeleteButton",
 }
 
 type BackRepoNodeStruct struct {
@@ -501,6 +508,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNode(node *models.Node) {
 
 	nodeDB.IsInEditMode_Data.Bool = node.IsInEditMode
 	nodeDB.IsInEditMode_Data.Valid = true
+
+	nodeDB.HasDeleteButton_Data.Bool = node.HasDeleteButton
+	nodeDB.HasDeleteButton_Data.Valid = true
 }
 
 // CopyBasicFieldsFromNodeWOP
@@ -530,6 +540,9 @@ func (nodeDB *NodeDB) CopyBasicFieldsFromNodeWOP(node *NodeWOP) {
 
 	nodeDB.IsInEditMode_Data.Bool = node.IsInEditMode
 	nodeDB.IsInEditMode_Data.Valid = true
+
+	nodeDB.HasDeleteButton_Data.Bool = node.HasDeleteButton
+	nodeDB.HasDeleteButton_Data.Valid = true
 }
 
 // CopyBasicFieldsToNode
@@ -543,6 +556,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNode(node *models.Node) {
 	node.HasAddChildButton = nodeDB.HasAddChildButton_Data.Bool
 	node.HasEditButton = nodeDB.HasEditButton_Data.Bool
 	node.IsInEditMode = nodeDB.IsInEditMode_Data.Bool
+	node.HasDeleteButton = nodeDB.HasDeleteButton_Data.Bool
 }
 
 // CopyBasicFieldsToNodeWOP
@@ -557,6 +571,7 @@ func (nodeDB *NodeDB) CopyBasicFieldsToNodeWOP(node *NodeWOP) {
 	node.HasAddChildButton = nodeDB.HasAddChildButton_Data.Bool
 	node.HasEditButton = nodeDB.HasEditButton_Data.Bool
 	node.IsInEditMode = nodeDB.IsInEditMode_Data.Bool
+	node.HasDeleteButton = nodeDB.HasDeleteButton_Data.Bool
 }
 
 // Backup generates a json file from a slice of all NodeDB instances in the backrepo

@@ -43,6 +43,7 @@ export class NodeDetailComponent implements OnInit {
 	HasAddChildButtonFormControl: UntypedFormControl = new UntypedFormControl(false);
 	HasEditButtonFormControl: UntypedFormControl = new UntypedFormControl(false);
 	IsInEditModeFormControl: UntypedFormControl = new UntypedFormControl(false);
+	HasDeleteButtonFormControl: UntypedFormControl = new UntypedFormControl(false);
 
 	// the NodeDB of interest
 	node: NodeDB = new NodeDB
@@ -155,6 +156,7 @@ export class NodeDetailComponent implements OnInit {
 				this.HasAddChildButtonFormControl.setValue(this.node.HasAddChildButton)
 				this.HasEditButtonFormControl.setValue(this.node.HasEditButton)
 				this.IsInEditModeFormControl.setValue(this.node.IsInEditMode)
+				this.HasDeleteButtonFormControl.setValue(this.node.HasDeleteButton)
 			}
 		)
 
@@ -174,6 +176,7 @@ export class NodeDetailComponent implements OnInit {
 		this.node.HasAddChildButton = this.HasAddChildButtonFormControl.value
 		this.node.HasEditButton = this.HasEditButtonFormControl.value
 		this.node.IsInEditMode = this.IsInEditModeFormControl.value
+		this.node.HasDeleteButton = this.HasDeleteButtonFormControl.value
 
 		// save from the front pointer space to the non pointer space for serialization
 

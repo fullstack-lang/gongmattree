@@ -18,6 +18,7 @@ export class NodeDB {
 	HasAddChildButton: boolean = false
 	HasEditButton: boolean = false
 	IsInEditMode: boolean = false
+	HasDeleteButton: boolean = false
 
 	// insertion point for other declarations
 	Children?: Array<NodeDB>
