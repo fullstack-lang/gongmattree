@@ -197,6 +197,8 @@ export class TreeComponent implements OnInit {
 
     var gongNode: gongmattree.NodeDB = new (gongmattree.NodeDB)
     gongNode.Name = "new node"
+    gongNode.HasEditButton = true
+    gongNode.IsInEditMode = true
     gongNode.Node_ChildrenDBID.Valid = true
     gongNode.Node_ChildrenDBID.Int64 = node.gongNode.ID
     this.gongmattreeNodeService.postNode(gongNode).subscribe(
