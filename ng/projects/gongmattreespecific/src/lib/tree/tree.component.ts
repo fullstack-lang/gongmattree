@@ -174,7 +174,6 @@ export class TreeComponent implements OnInit {
     console.log(node.name)
 
     node.gongNode.IsExpanded = !node.gongNode.IsExpanded
-
     this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
       gongmattreeNode => {
         console.log("updated node")
@@ -187,6 +186,26 @@ export class TreeComponent implements OnInit {
 
     node.gongNode.IsChecked = !node.gongNode.IsChecked
 
+    this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
+      gongmattreeNode => {
+        console.log("updated node")
+      }
+    )
+  }
+
+  addNewItem(node: FlatNode) {
+
+    var gongNode: gongmattree.NodeDB = new (gongmattree.NodeDB)
+    gongNode.Name = "new node"
+    gongNode.Node_ChildrenDBID.Valid = true
+    gongNode.Node_ChildrenDBID.Int64 = node.gongNode.ID
+    this.gongmattreeNodeService.postNode(gongNode).subscribe(
+      gongmattreeNode => {
+        console.log("updated created")
+      }
+    )
+
+    node.gongNode.IsExpanded = true
     this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
       gongmattreeNode => {
         console.log("updated node")

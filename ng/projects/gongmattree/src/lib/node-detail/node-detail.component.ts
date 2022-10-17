@@ -40,6 +40,7 @@ export class NodeDetailComponent implements OnInit {
 	HasCheckboxButtonFormControl: UntypedFormControl = new UntypedFormControl(false);
 	IsCheckedFormControl: UntypedFormControl = new UntypedFormControl(false);
 	IsCheckboxDisabledFormControl: UntypedFormControl = new UntypedFormControl(false);
+	HasAddChildButtonFormControl: UntypedFormControl = new UntypedFormControl(false);
 
 	// the NodeDB of interest
 	node: NodeDB = new NodeDB
@@ -149,6 +150,7 @@ export class NodeDetailComponent implements OnInit {
 				this.HasCheckboxButtonFormControl.setValue(this.node.HasCheckboxButton)
 				this.IsCheckedFormControl.setValue(this.node.IsChecked)
 				this.IsCheckboxDisabledFormControl.setValue(this.node.IsCheckboxDisabled)
+				this.HasAddChildButtonFormControl.setValue(this.node.HasAddChildButton)
 			}
 		)
 
@@ -165,6 +167,7 @@ export class NodeDetailComponent implements OnInit {
 		this.node.HasCheckboxButton = this.HasCheckboxButtonFormControl.value
 		this.node.IsChecked = this.IsCheckedFormControl.value
 		this.node.IsCheckboxDisabled = this.IsCheckboxDisabledFormControl.value
+		this.node.HasAddChildButton = this.HasAddChildButtonFormControl.value
 
 		// save from the front pointer space to the non pointer space for serialization
 

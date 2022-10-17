@@ -10,5 +10,7 @@ type Node struct {
 	IsChecked          bool
 	IsCheckboxDisabled bool
 
+	HasAddChildButton bool
+
 	Children []*Node
 }
