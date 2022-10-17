@@ -32,21 +32,21 @@ func stageInjection() {
 	__Node__000000_Child_1.IsExpanded = true
 	__Node__000000_Child_1.HasCheckboxButton = true
 	__Node__000000_Child_1.IsChecked = false
-	__Node__000000_Child_1.IsDisabled = true
+	__Node__000000_Child_1.IsCheckboxDisabled = true
 
 	// Node Child 1.1 values setup
 	__Node__000001_Child_1_1.Name = `Child 1.1`
 	__Node__000001_Child_1_1.IsExpanded = false
 	__Node__000001_Child_1_1.HasCheckboxButton = true
 	__Node__000001_Child_1_1.IsChecked = true
-	__Node__000001_Child_1_1.IsDisabled = false
+	__Node__000001_Child_1_1.IsCheckboxDisabled = false
 
 	// Node Child2 values setup
 	__Node__000002_Child2.Name = `Child2`
 	__Node__000002_Child2.IsExpanded = false
 	__Node__000002_Child2.HasCheckboxButton = true
 	__Node__000002_Child2.IsChecked = false
-	__Node__000002_Child2.IsDisabled = false
+	__Node__000002_Child2.IsCheckboxDisabled = false
 
 	// Tree Tree 1 values setup
 	__Tree__000000_Tree_1.Name = `Tree 1`
@@ -56,5 +56,3 @@ func stageInjection() {
 	__Tree__000000_Tree_1.RootNodes = append(__Tree__000000_Tree_1.RootNodes, __Node__000002_Child2)
 	__Tree__000000_Tree_1.RootNodes = append(__Tree__000000_Tree_1.RootNodes, __Node__000000_Child_1)
 }
-
-

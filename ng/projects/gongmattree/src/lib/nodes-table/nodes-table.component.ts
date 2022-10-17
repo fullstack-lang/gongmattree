@@ -80,8 +80,8 @@ export class NodesTableComponent implements OnInit {
         case 'IsChecked':
           return nodeDB.IsChecked?"true":"false";
 
-        case 'IsDisabled':
-          return nodeDB.IsDisabled?"true":"false";
+        case 'IsCheckboxDisabled':
+          return nodeDB.IsCheckboxDisabled?"true":"false";
 
         case 'Node_Children':
           if (this.frontRepo.Nodes.get(nodeDB.Node_ChildrenDBID.Int64) != undefined) {
@@ -174,7 +174,7 @@ export class NodesTableComponent implements OnInit {
         "IsExpanded",
         "HasCheckboxButton",
         "IsChecked",
-        "IsDisabled",
+        "IsCheckboxDisabled",
         "Node_Children",
         "Tree_RootNodes",
       ]
@@ -184,7 +184,7 @@ export class NodesTableComponent implements OnInit {
         "IsExpanded",
         "HasCheckboxButton",
         "IsChecked",
-        "IsDisabled",
+        "IsCheckboxDisabled",
         "Node_Children",
         "Tree_RootNodes",
       ]

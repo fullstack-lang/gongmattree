@@ -6,9 +6,9 @@ type Node struct {
 	IsExpanded bool
 
 	// fields related to the selection of the node by a check box
-	HasCheckboxButton bool
-	IsChecked         bool
-	IsDisabled        bool
+	HasCheckboxButton  bool
+	IsChecked          bool
+	IsCheckboxDisabled bool
 
 	Children []*Node
 }
