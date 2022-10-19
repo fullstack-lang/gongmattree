@@ -215,7 +215,7 @@ export class TreeComponent implements OnInit {
     )
   }
 
-  edit(node: FlatNode) {
+  setInEditMode(node: FlatNode) {
     node.gongNode.IsInEditMode = true
     this.gongmattreeNodeService.updateNode(node.gongNode).subscribe(
       gongmattreeNode => {
