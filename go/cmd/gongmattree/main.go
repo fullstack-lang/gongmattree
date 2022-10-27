@@ -250,8 +250,8 @@ func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterCreate(
 
 func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterDelete(
 	stage *models.StageStruct,
-	node *models.Node) {
-	log.Println("Node delete " + node.Name)
+	old, new *models.Node) {
+	log.Println("Node delete " + new.Name)
 }
 
 func (onNodeUpdateCallbackStruct NodeCallbackStruct) OnAfterRead(

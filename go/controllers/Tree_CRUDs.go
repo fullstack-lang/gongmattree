@@ -127,8 +127,8 @@ func PostTree(c *gin.Context) {
 	}
 
 	// get an instance (not staged) from DB instance, and call callback function
-	tree := new(models.Tree)
-	treeDB.CopyBasicFieldsToTree(tree)
+	orm.BackRepo.BackRepoTree.CheckoutPhaseOneInstance(&treeDB)
+	tree := (*orm.BackRepo.BackRepoTree.Map_TreeDBID_TreePtr)[treeDB.ID]
 
 	if tree != nil {
 		models.AfterCreateFromFront(&models.Stage, tree)
@@ -269,10 +269,14 @@ func DeleteTree(c *gin.Context) {
 	// with gorm.Model field, default delete is a soft delete. Unscoped() force delete
 	db.Unscoped().Delete(&treeDB)
 
+	// get an instance (not staged) from DB instance, and call callback function
+	treeDeleted := new(models.Tree)
+	treeDB.CopyBasicFieldsToTree(treeDeleted)
+
 	// get stage instance from DB instance, and call callback function
-	tree := (*orm.BackRepo.BackRepoTree.Map_TreeDBID_TreePtr)[treeDB.ID]
-	if tree != nil {
-		models.AfterDeleteFromFront(&models.Stage, tree)
+	treeStaged := (*orm.BackRepo.BackRepoTree.Map_TreeDBID_TreePtr)[treeDB.ID]
+	if treeStaged != nil {
+		models.AfterDeleteFromFront(&models.Stage, treeStaged, treeDeleted)
 	}
 
 	// a DELETE generates a back repo commit increase
